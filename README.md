@@ -11,3 +11,7 @@ L'objectif principal de ce projet est de concevoir et de développer une applica
 ROCMA : maquette site  
 Joann : cas d'utilisation  
 Killian : MCD  
+
+
+## Base de Données
+Mise en place de la contrainte "unique" sur les numéro de téléphone de Adhérant et Moniteur
