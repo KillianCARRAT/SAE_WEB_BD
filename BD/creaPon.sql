@@ -4,11 +4,11 @@ DROP TABLE ADHERANT;
 DROP TABLE MONITEUR;
 
 CREATE TABLE ADHERANT (
-    ipA INT PRIMARY KEY,
+    idA INT PRIMARY KEY,
     nomA VARCHAR(20),
     prenomA VARCHAR(20),
     telA VARCHAR(15) UNIQUE,
-    poid INT
+    poid INT CHECK (poid > 0)
 );
 
 CREATE TABLE MONITEUR (
@@ -21,18 +21,18 @@ CREATE TABLE MONITEUR (
 CREATE TABLE PONEY (
     idP INT PRIMARY KEY,
     nomP VARCHAR(20),
-    capacite INT
+    capacite INT CHECK (poid > 0)
 );
 
 CREATE TABLE RESERVATION (
+    idR int PRIMARY KEY;
     dateR DATETIME,
     idA INT,
     idP INT,
     idM INT,
-    duree INT,
+    duree INT CHECK (duree IN (1, 2)),
     individuel BOOLEAN,
-    FOREIGN KEY (idA) REFERENCES ADHERANT(ipA),
+    FOREIGN KEY (idA) REFERENCES ADHERANT(idA),
     FOREIGN KEY (idM) REFERENCES MONITEUR(idM),
-    FOREIGN KEY (idP) REFERENCES PONEY(idP),
-    PRIMARY KEY (dateR, idA, idP, idM)
+    FOREIGN KEY (idP) REFERENCES PONEY(idP)
 );
