@@ -29,8 +29,8 @@ L'objectif principal de ce projet est de concevoir et de développer une applica
 
 ### Séance 5 :
 - Rocma : maquette site
-Joann : refonte mcd
-Killian : refonte de la BD
+- Joann : refonte mcd
+- Killian : refonte de la BD
 
 ### Séance 6 :
 - Rocma : rédaction rapport
