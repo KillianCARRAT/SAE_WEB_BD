@@ -20,12 +20,12 @@ CREATE TABLE MONITEUR (
 
 CREATE TABLE PONEY (
     idP INT PRIMARY KEY,
-    nomP VARCHAR(20),
-    capacite INT CHECK (poid > 0)
+    nomP VARCHAR(40),
+    capacite INT CHECK (capacite > 0)
 );
 
 CREATE TABLE RESERVATION (
-    idR int PRIMARY KEY;
+    idR int PRIMARY KEY,
     dateR DATETIME,
     idA INT,
     idP INT,
