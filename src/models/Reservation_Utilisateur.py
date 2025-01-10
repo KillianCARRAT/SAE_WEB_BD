@@ -6,4 +6,4 @@ class Reservation_Utilisateur(db.Model):
     id_reservation = db.Column(db.Integer, db.ForeignKey('RESERVATION.id_reservation'), primary_key=True)
 
     utilisateur = db.relationship('Utilisateur', back_populates='les_reservations', lazy=True)
-    reservation = db.relationship("Reservation", back_populates="les_reservations", lazy=True, overlaps="utilisateur")
+    reservation = db.relationship("Reservation", back_populates="les_reservations_utilisateurs", lazy=True, overlaps="utilisateur")

@@ -9,5 +9,7 @@ class Reservation(db.Model):
 
     poney = db.relationship("Poney", back_populates="les_reservations", lazy=True)
     utilisateur = db.relationship("Reservation_Utilisateur", lazy=True)
+    seance = db.relationship("Reservation_Seance", lazy=True)
         
-    les_reservations = db.relationship("Reservation_Utilisateur", back_populates="reservation", lazy=True, overlaps="utilisateur")
+    les_reservations_utilisateurs = db.relationship("Reservation_Utilisateur", back_populates="reservation", lazy=True, overlaps="utilisateur")
+    les_reservations_seances = db.relationship("Reservation_Seance", back_populates="reservation", lazy=True, overlaps="seance")

@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+<div class="d-flex flex-column align-items-center">
+    <h1 class="fw-bolder display-3 my-5"><strong>Mes Séances Moniteurs</strong></h1>
+
+    <div class="d-flex justify-content-center">
+        <table class="table table-dark table-striped table-hover w-75">
+            <thead>
+                <tr>
+                    <th scope="col">Heure</th>
+                    <th scope="col">Lundi</th>
+                    <th scope="col">Mardi</th>
+                    <th scope="col">Mercredi</th>
+                    <th scope="col">Jeudi</th>
+                    <th scope="col">Vendredi</th>
+                    <th scope="col">Samedi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for heure in range(0, 24) %}
+                <tr>
+                    <th scope="row">{{ heure }}:00</th>
+                    {% for jour in les_seances %} {% set seance_affichee = False %} {% for seance in jour %} {% if
+                    seance.heure_debut_seance.hour == heure %} {% set duree = seance.heure_fin_seance.hour -
+                    seance.heure_debut_seance.hour %}
+                    <td rowspan="{{ duree }}">
+                        <strong>{{ seance.nom }}</strong><br />
+                        {{ seance.heure_debut_seance.strftime('%H:%M') }} - {{ seance.heure_fin_seance.strftime('%H:%M')
+                        }}
+                    </td>
+                    {% set seance_affichee = True %} {% endif %} {% endfor %} {% if not seance_affichee %}
+                    <td></td>
+                    {% endif %} {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% endblock %}
+</div>
