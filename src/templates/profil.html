@@ -8,20 +8,6 @@
     <form class="w-75" method="post" action="{{ url_for('modifier_profil') }}" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="text-center mb-3">
-            <img
-                src="{{ url_for('static', filename='img/profil/' ~ current_user.id_utilisateur)}}"
-                alt="profil"
-                class="img-fluid rounded-circle"
-                style="width: 150px; height: 150px"
-            />
-            <div>
-                <label for="modif_pp" 
-                       class="col-md-8 form-group btn btn-outline-light mt-4 fw-bold"
-                       style="font-size: 14px; padding: 5px 10px; width: 200px; height: 48px;">
-                    {{ form.img.label(style="font-size:20px") }} 
-                    {{ form.img(size=25, class_="w-25 invisible btn btn-outline-light mt-2 fw-bold") }}
-                </label>
-            </div>
         </div>
         <div class="mb-3 form-group">
             <label class="color_white mb-2" for="name">{{ form.nom_user.label }}</label>

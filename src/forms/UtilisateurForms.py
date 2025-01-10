@@ -15,7 +15,6 @@ class InscriptionForm(FlaskForm):
     mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
     confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
     email = StringField('Adresse mail', validators=[DataRequired()])
-    img = FileField('Photo de profil', validators=[DataRequired()])
     role = RadioField('Role', validators=[DataRequired()])
     def validate(self, extra_validators=None):
         if not FlaskForm.validate(self, extra_validators=extra_validators):
@@ -43,7 +42,6 @@ class UpdateUser(FlaskForm):
     nom_user = StringField("Nom", validators=[DataRequired()])
     prenom_user = StringField('Prenom', validators=[DataRequired()])
     email = StringField('Adresse mail', validators=[DataRequired()])
-    img = FileField('Modifier la photo')
     def validate(self, extra_validators=None):
         if not super().validate(extra_validators=extra_validators):
             return False

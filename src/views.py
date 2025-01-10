@@ -70,13 +70,7 @@ def signin():
             u.prenom_utilisateur = f.prenom_user.data
             u.mdp_utilisateur = sha256(f.mot_de_passe.data.encode()).hexdigest()
             u.email_utilisateur = f.email.data
-            u.img_utilisateur = str(Utilisateur.get_last_id()+1)
             u.role_id = f.role.data
-            file = f.img.data
-            if file:
-                if not os.path.exists("src/static/img/profil"):
-                    os.makedirs("src/static/img/profil")
-                file.save(os.path.join("src/static/img/profil", str(Utilisateur.get_last_id()+1)))
             db.session.add(u)
             db.session.commit()
             return redirect(url_for('login'))
@@ -155,10 +149,6 @@ def modifier_profil():
             user.prenom_utilisateur = f.prenom_user.data
             user.nom_utilisateur = f.nom_user.data
             user.email_utilisateur = f.email.data
-            file = f.img.data
-            if file:
-                file_path = os.path.join("src/static/img/profil", str(current_user.id_utilisateur))
-                file.save(file_path)
             db.session.commit()
             return redirect(url_for('home'))
     f.nom_user.data = current_user.nom_utilisateur
