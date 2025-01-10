@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'base.html' %} {% block content %}
+<div class="d-flex justify-content-center">
+    <h1 class="fw-bolder display-4 m-4">Modifier le profil</h1>
+</div>
+
+<div class="mx-auto w-25 d-flex flex-column align-items-center div-dark rounded-4 mb-3 p-4">
+    <form class="w-75" method="post" action="{{ url_for('modifier_profil') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="text-center mb-3">
+            <img
+                src="{{ url_for('static', filename='img/profil/' ~ current_user.id_utilisateur)}}"
+                alt="profil"
+                class="img-fluid rounded-circle"
+                style="width: 150px; height: 150px"
+            />
+            <div>
+                <label for="modif_pp" 
+                       class="col-md-8 form-group btn btn-outline-light mt-4 fw-bold"
+                       style="font-size: 14px; padding: 5px 10px; width: 200px; height: 48px;">
+                    {{ form.img.label(style="font-size:20px") }} 
+                    {{ form.img(size=25, class_="w-25 invisible btn btn-outline-light mt-2 fw-bold") }}
+                </label>
+            </div>
+        </div>
+        <div class="mb-3 form-group">
+            <label class="color_white mb-2" for="name">{{ form.nom_user.label }}</label>
+            {{ form.nom_user(class_ ="form-control") }}
+        </div>
+        <div class="mb-3 form-group">
+            <label class="color_white mb-3" for="firstname">{{ form.prenom_user.label }}</label>
+            {{ form.prenom_user(class_ ="form-control") }}
+        </div>
+        <div class="mb-3 form-group">
+            <label class="color_white mb-3" for="firstname">{{ form.email.label }}</label>
+            {{ form.email(class_ ="form-control") }}
+        </div>
+        <div class="mb-3 form-group ">
+            <a href={{url_for('mdp_modif')}} style="text-decoration: none; color: red;">Modifier le mot de passe</a>
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            <button class="btn btn-base fw-bolder" type="submit">Enregistrer</button>
+        </div>
+    </form>
+    <button class="btn btn-danger mt-3 fw-bolder">
+        <a href={{url_for('logout')}} style="text-decoration: none; color: inherit;">Se déconnecter</a>
+    </button>
+</div>
+
+{% endblock %}

@@ -5,6 +5,6 @@ class Poney(db.Model):
 
     id_poney = db.Column(db.Integer, primary_key=True)
     nom_poney = db.Column(db.Text)
-    capacite_poney = db.Columb(db.Integer)
+    capacite_poney = db.Column(db.Integer)
 
-    les_utilisateurs = db.relationship('Reservation_Utilisateur', back_populates='poney', lazy=True)
+    les_reservations = db.relationship('Reservation', back_populates='poney', lazy=True)

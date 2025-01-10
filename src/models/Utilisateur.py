@@ -16,6 +16,17 @@ class Utilisateur(db.Model, UserMixin):
     active = db.Column(db.Boolean, default=True)
     fs_uniquifier = db.Column(db.String(255), unique=True, default=lambda: str(uuid.uuid4()))
 
-    les_notifs = db.relationship('Notification_Utilisateur', back_populates='utilisateur', lazy=True)
-    les_poneys = db.relationship('Reservation_Utilisateur', back_populates='utilisateur', lazy=True)
+    #les_notifs = db.relationship('Notification_Utilisateur', back_populates='utilisateur', lazy=True)
+    les_reservations = db.relationship("Reservation_Utilisateur", back_populates="utilisateur", lazy=True)
     
+    def is_admin(self):
+        return self.role_id == 2
+
+
+    def get_last_id():
+        id = 0
+        users = Utilisateur.query.all()
+        for user in users:
+            if user.id_utilisateur > id:
+                id = user.id_utilisateur
+        return id
