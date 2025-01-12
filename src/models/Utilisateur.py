@@ -15,9 +15,12 @@ class Utilisateur(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('ROLE.id_role'))
     active = db.Column(db.Boolean, default=True)
     fs_uniquifier = db.Column(db.String(255), unique=True, default=lambda: str(uuid.uuid4()))
-
-    #les_notifs = db.relationship('Notification_Utilisateur', back_populates='utilisateur', lazy=True)
+    
+    # Pour un élève
     les_reservations = db.relationship("Reservation_Utilisateur", back_populates="utilisateur", lazy=True)
+    
+    # Pour un moniteur
+    les_seances = db.relationship("Seance", back_populates="moniteur", lazy=True)
     
     def is_admin(self):
         return self.role_id == 2

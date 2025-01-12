@@ -13,10 +13,12 @@ from flask import abort
 
 #Les imports des formulaires
 from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword
+from .forms.ReservationForms import AjoutSeance
 
 #Les imports des modèles
 from .models.Utilisateur import Utilisateur
 from .models.Role import Role
+from .models.Seance import Seance
 
 def roles(*roles):
     """Vérifie si l'utilisateur a un rôle parmi ceux passés en paramètre
@@ -155,3 +157,43 @@ def modifier_profil():
     f.prenom_user.data = current_user.prenom_utilisateur
     f.email.data = current_user.email_utilisateur 
     return render_template('profil.html', form=f)
+
+@app.route('/home/ajout_seance', methods=['GET','POST'])
+@login_required
+@roles("Administrateur","Organisateur")
+def ajout_seance():
+    """Renvoie la page d'ajout de séance
+
+    Returns:
+        ajout_seance.html: Une page d'ajout de séance
+    """
+    f = AjoutSeance()
+    f.moniteur_id.choices = [(user.id_utilisateur, user.nom_utilisateur + " " + user.prenom_utilisateur) for user in Utilisateur.query.all()] # ! Filtrer les moniteurs
+    f.moniteur_id.data = current_user.id_utilisateur
+    if f.validate_on_submit():
+        seance = Seance()
+        seance.jour_seance = f.jour_seance.data
+        seance.heure_debut_seance = f.heure_debut_seance.data
+        seance.heure_fin_seance = f.heure_fin_seance.data
+        seance.nb_places_seance = f.nb_places_seance.data
+        seance.moniteur_id = f.moniteur_id.data
+        db.session.add(seance)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('ajout_seance.html', form=f)
+
+@app.route('/home/voir_seances', methods=['GET','POST'])
+@login_required
+@roles("Administrateur","Organisateur")
+def voir_seances():
+    """Renvoie la page de visualisation des séances
+
+    Returns:
+        voir_seances.html: Une page de visualisation des séances
+    """
+    seances = Seance.query.all()
+    planning = [[] for i in range(7)]
+    for seance in seances:
+        planning[seance.jour_seance-1].append(seance)
+    print(planning)
+    return render_template('seances.html', les_seances=planning)
