@@ -14,11 +14,13 @@ from flask import abort
 #Les imports des formulaires
 from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword
 from .forms.ReservationForms import AjoutSeance
+from .forms.ContactForms import ContactForm
 
 #Les imports des modèles
 from .models.Utilisateur import Utilisateur
 from .models.Role import Role
 from .models.Seance import Seance
+from .models.Contact import Contact
 
 def roles(*roles):
     """Vérifie si l'utilisateur a un rôle parmi ceux passés en paramètre
@@ -197,3 +199,24 @@ def voir_seances():
         planning[seance.jour_seance-1].append(seance)
     print(planning)
     return render_template('seances.html', les_seances=planning)
+
+@app.route('/home/contacter', methods=['GET','POST'])
+def contacter():
+    """Renvoie la page de contacte d'administrateur/moniteurs
+
+    Returns:
+        contacter.html: Une page de contacte d'administrateur/moniteurs
+    """
+    f = ContactForm()
+    if f.validate_on_submit:
+        if f.validate():
+            c = Contact()
+            c.concerne = f.concerne.data
+            c.sujet = f.sujet.data
+            c.contenu = f.contenu.data
+            c.utilisateur = current_user
+            c.id_utilisateur = current_user.id_utilisateur
+            db.session.add(c)
+            db.session.commit()
+            return redirect(url_for('home'))
+    return render_template('contacter.html', form = f)
