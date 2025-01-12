@@ -21,6 +21,8 @@ class Utilisateur(db.Model, UserMixin):
     
     # Pour un moniteur
     les_seances = db.relationship("Seance", back_populates="moniteur", lazy=True)
+
+    les_contacts = db.relationship('Contact', back_populates='utilisateur', lazy=True)
     
     def is_admin(self):
         return self.role_id == 2
