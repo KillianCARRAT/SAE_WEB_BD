@@ -10,6 +10,7 @@ from werkzeug.datastructures import FileStorage
 import os
 from functools import wraps
 from flask import abort
+from flask import jsonify
 
 #Les imports des formulaires
 from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword
@@ -191,9 +192,20 @@ def voir_seances():
     Returns:
         voir_seances.html: Une page de visualisation des séances
     """
-    seances = Seance.query.all()
-    planning = [[] for i in range(7)]
-    for seance in seances:
-        planning[seance.jour_seance-1].append(seance)
-    print(planning)
-    return render_template('seances.html', les_seances=planning)
+    return render_template('seances.html')
+
+@app.route('/seances/', methods=['GET','POST'])
+def seances():
+    Seances = Seance.query.all()
+    agenda = [[] for _ in range(6)]
+    for seance in Seances:
+        jour = seance.jour_seance
+        seance_dict = {
+            "id_seance": seance.id_seance,
+            "heure_debut_seance": seance.heure_debut_seance.strftime('%H:%M:%S'),
+            "heure_fin_seance": seance.heure_fin_seance.strftime('%H:%M:%S'),
+            "nb_places_seance": seance.nb_places_seance,
+            "moniteur_id": seance.moniteur_id
+        }
+        agenda[jour-1].append(seance_dict)
+    return jsonify(agenda)
