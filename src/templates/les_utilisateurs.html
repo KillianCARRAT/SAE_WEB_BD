@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="fw-bolder display-3 my-5"><strong>Les Adhérents et Moniteurs</strong></h1>
+
+<div class="container mt-5">
+    {% for user in utilisateurs %}
+    <div class="container mt-5 shadow p-3 mb-2 bg-white rounded">
+        <h2>Nom : {{ user.nom_utilisateur }}</h2>
+        <p>Prenom : {{ user.prenom_utilisateur }}</p>
+        <p>Email : {{ user.email_utilisateur }}</p>
+        <p>Role : {{ user.role.name }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

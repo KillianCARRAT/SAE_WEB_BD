@@ -2,15 +2,13 @@
 <h1 class="fw-bolder display-3 my-5"><strong>Les Poneys</strong></h1>
 
 <div class="container mt-5">
-    <ul>
-        {% for poney in poneys %}
-        <li>
-            <p>{{ poney.nom_poney }}</p>
-            <a href="/home/poneys/{{ poney.id_poney }}" class="btn btn-primary">Voir</a>
-            <a href="/home/poneys/{{ poney.id_poney }}/modifier" class="btn btn-warning">Modifier</a>
-            <a href="/home/poneys/{{ poney.id_poney }}/supprimer" class="btn btn-danger">Supprimer</a>
-        </li>
-        {% endfor %}
-    </ul>
+    {% for poney in poneys %}
+    <div class="container mt-5 shadow p-3 mb-2 bg-white rounded">
+        <h2>{{ poney.nom_poney }}</h2>
+        <p>Son poid est de {{ poney.capacite_poney }} grammes</p>
+        <a href="{{ url_for('poney', id_poney=poney.id_poney)}}" class="btn btn-warning">Modifier</a>
+        <a href="{{ url_for('del_poney', id_poney=poney.id_poney)}}" class="btn btn-danger">Supprimer</a>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
