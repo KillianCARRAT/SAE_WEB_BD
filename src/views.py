@@ -97,8 +97,6 @@ user_datastore = SQLAlchemySessionUserDatastore(db.session, Utilisateur, Role)
 security = Security(app, user_datastore)
 
 @app.route('/home', methods=['GET','POST'])
-@login_required
-@roles("Administrateur","Organisateur")
 def home():
     """Renvoie la page d'accueil
 
