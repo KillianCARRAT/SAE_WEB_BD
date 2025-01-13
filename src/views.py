@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, request
 from flask_security import login_required, current_user, roles_required,  logout_user, login_user
 from flask import render_template, redirect, url_for, request, send_from_directory
 from datetime import datetime
+from datetime import timedelta
 from hashlib import sha256
 from flask_security import Security, SQLAlchemySessionUserDatastore
 from werkzeug.utils import secure_filename
@@ -172,14 +173,39 @@ def ajout_seance():
     f.moniteur_id.choices = [(user.id_utilisateur, user.nom_utilisateur + " " + user.prenom_utilisateur) for user in Utilisateur.query.all()] # ! Filtrer les moniteurs
     f.moniteur_id.data = current_user.id_utilisateur
     if f.validate_on_submit():
-        seance = Seance()
-        seance.jour_seance = f.jour_seance.data
-        seance.heure_debut_seance = f.heure_debut_seance.data
-        seance.heure_fin_seance = f.heure_fin_seance.data
-        seance.nb_places_seance = f.nb_places_seance.data
-        seance.moniteur_id = f.moniteur_id.data
-        db.session.add(seance)
+        if f.hebdomadaire_seance.data:
+            date_debut = f.date_debut_seance.data
+            date_fin = f.date_fin_seance.data
+            jour_seance = f.jour_seance.data
+            print(date_debut, date_fin, jour_seance)
+            date = date_debut
+            while date <= date_fin:
+                if (date.weekday()+1) == jour_seance:
+                    seance = Seance()
+                    seance.annee_seance = date.year
+                    seance.semaine_seance = date.isocalendar()[1]
+                    seance.jour_seance = jour_seance
+                    seance.heure_debut_seance = f.heure_debut_seance.data
+                    seance.heure_fin_seance = f.heure_fin_seance.data
+                    seance.nb_places_seance = f.nb_places_seance.data
+                    seance.moniteur_id = f.moniteur_id.data
+                    db.session.add(seance)
+                date += timedelta(days=1)
+        else:
+            date = f.semaine_seance.data
+            seance = Seance()
+            seance.annee_seance = date.year
+            seance.semaine_seance = date.isocalendar()[1]
+            seance.jour_seance = date.weekday()+1
+            seance.heure_debut_seance = f.heure_debut_seance.data
+            seance.heure_fin_seance = f.heure_fin_seance.data
+            seance.nb_places_seance = f.nb_places_seance.data
+            seance.moniteur_id = f.moniteur_id.data
+            db.session.add(seance)
         db.session.commit()
+
+
+
         return redirect(url_for('home'))
     return render_template('ajout_seance.html', form=f)
 
@@ -194,9 +220,13 @@ def voir_seances():
     """
     return render_template('seances.html')
 
-@app.route('/seances/', methods=['GET','POST'])
-def seances():
-    Seances = Seance.query.all()
+@app.route('/seances/<int:semaine>', methods=['GET','POST'])
+@app.route('/seances', methods=['GET','POST']) # ! refaire la route pour prendre en parameètre une semaine
+def seances(semaine):
+    if semaine == None:
+        semaine = datetime.now().isocalendar()[1]
+        print(semaine)
+    Seances = Seance.query.filter_by(semaine_seance=semaine).all()
     agenda = [[] for _ in range(6)]
     for seance in Seances:
         jour = seance.jour_seance

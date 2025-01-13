@@ -3,6 +3,8 @@ from src.app import db
 class Seance(db.Model):
     __tablename__ = "SEANCE"
     id_seance = db.Column(db.Integer, primary_key=True)
+    annee_seance = db.Column(db.Integer)
+    semaine_seance = db.Column(db.Integer)
     jour_seance = db.Column(db.Integer)
     heure_debut_seance = db.Column(db.Time)
     heure_fin_seance = db.Column(db.Time)
