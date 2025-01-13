@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %}
+<script src="{{ url_for('static', filename='hebdo.js') }}" crossorigin="anonymous" defer></script>
+<div class="container mt-5">
+    <h1 class="fw-bolder display-3 text-center my-5"><strong>Mes Séances Moniteurs</strong></h1>
+
+    <div class="d-flex justify-content-center mb-5">
+        <form action="{{ url_for('ajout_seance') }}" method="post" class="p-4 border rounded shadow-sm bg-light w-50">
+            {{ form.hidden_tag() }}
+            <div class="mx-auto d-flex flex-column m-4 w-50">
+                {{ form.hebdomadaire_seance.label(class="form-label") }} {{
+                form.hebdomadaire_seance(class="form-check-input", id="hebdo") }}
+            </div>
+            <div class="mx-auto d-flex flex-column m-4 w-50" id="jour_seance">
+                {{ form.jour_seance.label(class="form-label") }} {{ form.jour_seance(class="form-control") }}
+                <p>Du</p>
+                {{ form.date_debut_seance(class="form-control") }}
+
+                <p>Au</p>
+                {{ form.date_fin_seance(class="form-control") }}
+            </div>
+            <div class="mx-auto d-flex flex-column m-4 w-50" id="semaine_seance">
+                {{ form.semaine_seance.label(class="form-label") }} {{ form.semaine_seance(class="form-control") }}
+            </div>
+
+            <div class="mb-4">
+                {{ form.heure_debut_seance.label(class="form-label fw-bold") }} {{
+                form.heure_debut_seance(class="form-control rounded-3") }}
+            </div>
+
+            <div class="mb-4">
+                {{ form.heure_fin_seance.label(class="form-label fw-bold") }} {{
+                form.heure_fin_seance(class="form-control rounded-3") }}
+            </div>
+
+            <div class="mb-4">
+                {{ form.nb_places_seance.label(class="form-label fw-bold") }} {{
+                form.nb_places_seance(class="form-control rounded-3") }}
+            </div>
+
+            <div class="mb-4">
+                {{ form.moniteur_id.label(class="form-label fw-bold") }} {{ form.moniteur_id(class="form-control
+                rounded-3") }}
+            </div>
+
+            <div class="text-center">{{ form.submit(class="couleur-btn") }}</div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Détails de la Séance</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>ID de la séance :</strong> {{ seance.id_seance }}</p>
+                    <p><strong>Moniteur :</strong> {{ moniteur.nom_utilisateur }} {{ moniteur.prenom_utilisateur }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Date :</strong> {{ date.strftime('%d/%m/%Y') }}</p>
+                    <p><strong>Heure :</strong> {{ seance.heure_debut_seance }} - {{ seance.heure_fin_seance }}</p>
+                </div>
+            </div>
+            <a href="/home/seances" class="btn btn-secondary">Retour à la liste des séances</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

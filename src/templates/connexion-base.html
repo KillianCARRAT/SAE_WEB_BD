@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>StageFlow</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo.svg">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
+    {% endblock %}
+    {% block styles %}
+    <!-- Bootstrap CSS -->
+    {{ bootstrap.load_css() }}
+    {% endblock %}
+</head>
+
+<body class="container d-flex flex-column align-items-stretch">
+    <header class="d-flex flex-column align-items-center mt-0">
+        <div class="d-flex justify-content-center align-items-center m-5">
+            <img class="my-2 img-fluid" src="{{url_for('static', filename='img/logo.webp')}}" alt="logo de StageFlow">
+            <div class="d-flex flex-column ms-3"><strong
+                    class="plc-dark font-weight-bolder display-3 fw-bolder ms-2">Poney Club</strong>
+                <strong class="plc-dark font-weight-bolder display-3 fw-bolder ms-2">Grand Galop</strong>
+            </div>
+        </div>
+
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+
+</html>

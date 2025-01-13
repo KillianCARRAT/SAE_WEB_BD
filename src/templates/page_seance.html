@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Cours de: {{ seance.moniteur.prenom_utilisateur }} {{ seance.moniteur.nom_utilisateur }} du {{ seance.getDate() }}</h1>
+<div>
+    <h2>De {{ seance.heure_debut_seance }} à {{ seance.heure_fin_seance }}</h2>
+</div>
+    <a href="{{url_for('inscrire_cours', id_seance=seance.id_seance)}}">
+        <button type="submit">S'inscrire</button>
+    </a>
+{% endblock %}

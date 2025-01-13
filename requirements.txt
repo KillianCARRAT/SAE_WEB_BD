@@ -1,0 +1,24 @@
+blinker==1.8.2
+Bootstrap-Flask==2.4.1
+click==8.1.7
+Flask==3.0.3
+itsdangerous==2.2.0
+Jinja2==3.1.4
+MarkupSafe==3.0.2
+python-dotenv==1.0.1
+Werkzeug==3.1.1
+Wtforms==3.2.1
+flask_wtf==1.2.2
+sqlalchemy==2.0.16
+flask-sqlalchemy==3.1.1
+PyYAML==6.0.2
+flask-login==0.6.3
+flask-security==5.5.2
+Flask-Principal==0.4.0
+email-validator==2.0.0
+passlib==1.7.4
+importlib_resources==5.10.0
+dnspython==2.0.0
+idna==2.0.0
+setuptools==75.3.0
+pymysql== 1.1.1

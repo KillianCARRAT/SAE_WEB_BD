@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        {% block head %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Grand Galop</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo.svg" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff" />
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}" />
+        {% endblock %} {% block styles %}
+        <!-- Bootstrap CSS -->
+        {{ bootstrap.load_css() }} {% endblock %}
+    </head>
+
+    <body>
+        <header>
+            <nav class="nav navbar border">
+                <div>
+                    <a class="btn" href="{{url_for('home')}}">
+                        <h1 class="plc-dark">Grand Galop</h1>
+                    </a>
+                </div>
+                <div>
+                    <a class="btn" href="{{url_for('ajout_poney')}}">
+                        <h2 class="plc-dark">Ajouter poney</h2>
+                    </a>
+                </div>
+                <div>
+                    <a class="btn" href="{{url_for('ajout_seance')}}">
+                        <h2 class="plc-dark">Ajouter une séance</h2>
+                    </a>
+                </div>
+                <div>
+                    <a class="btn" href="{{url_for('voir_seances')}}">
+                        <h2 class="plc-dark">Mes séances</h2>
+                    </a>
+                </div>
+                <div>
+                    <a class="btn" href="{{ url_for('visualiser_seance') }}">
+                        <h2 class="plc-dark">Les séances à venir</h2>
+                    </a>
+                </div>
+                <div>
+                    <a class="btn" href="{{url_for('signin')}}">
+                        <h2 class="plc-dark">S'inscrire</h2>
+                    </a>
+                </div>
+                <div>
+                    <!-- modifier Tom Cook par l'utilisateur liée à la BD -->
+                    <a class="btn" href="{{url_for('modifier_profil')}}">
+                        {{current_user.nom_utilisateur}} {{current_user.prenom_utilisateur}} {{current_user.role.name}}
+                    </a>
+                </div>
+                <div>
+                    <a class="btn" href="{{url_for('contacter')}}">
+                        <h2 class="plc-dark">Contacter</h2>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <main>{% block content %} {% endblock %}</main>
+        <script src="{{ url_for('static', filename='popup.js')}}" crossorigin="anonymous" defer></script>
+    </body>
+</html>
