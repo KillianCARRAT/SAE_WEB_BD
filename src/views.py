@@ -111,7 +111,6 @@ security = Security(app, user_datastore)
 
 @app.route('/home', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
 def home():
     """Renvoie la page d'accueil
 
@@ -285,7 +284,6 @@ def seance(id_seance):
 
 @app.route('/home/ajout_poney', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
 def ajout_poney():
     f = PoneyForm()
     if f.validate_on_submit():
