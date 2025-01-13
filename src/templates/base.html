@@ -33,6 +33,11 @@
                     </a>
                 </div>
                 <div>
+                    <a class="btn" href="{{ url_for('visualiser_seance') }}">
+                        <h2 class="plc-dark">Les séances à venir</h2>
+                    </a>
+                </div>
+                <div>
                     <!-- modifier Tom Cook par l'utilisateur liée à la BD -->
                     <a class="btn" href="{{url_for('modifier_profil')}}">
                         {{current_user.nom_utilisateur}} {{current_user.prenom_utilisateur}} {{current_user.role.name}}
@@ -40,7 +45,7 @@
                 </div>
                 <div>
                     <a class="btn" href="{{url_for('contacter')}}">
-                        <button class="btn" type="submit">Contacter</button>
+                        <h2 class="plc-dark">Contacter</h2>
                     </a>
                 </div>
             </nav>

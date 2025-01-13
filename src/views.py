@@ -17,6 +17,10 @@ from .forms.ReservationForms import AjoutSeance
 from .forms.ContactForms import ContactForm
 
 #Les imports des modèles
+from .models.Reservation_Utilisateur import Reservation_Utilisateur
+from .models.Poney import Poney
+from .models.Reservation_Seance import Reservation_Seance
+from .models.Reservation import Reservation
 from .models.Utilisateur import Utilisateur
 from .models.Role import Role
 from .models.Seance import Seance
@@ -220,3 +224,38 @@ def contacter():
             db.session.commit()
             return redirect(url_for('home'))
     return render_template('contacter.html', form = f)
+
+@app.route('/home/visualiser_seance', methods=['GET','POST'])
+def visualiser_seance():
+    return render_template('visualiser_seance.html', seances=Seance.query.all())
+
+@app.route('/home/page_seance/<int:id_seance>', methods=['GET','POST'])
+def page_seance(id_seance):
+    return render_template('page_seance.html', id_seance=id_seance, seance=Seance.query.get(id_seance))
+
+@app.route('/home/inscrire/<int:id_seance>', methods=['GET','POST'])
+def inscrire_cours(id_seance):
+    seance = Seance.query.get(id_seance)
+    user = current_user
+
+    poney = Poney.getPoney(user.poids_utilisateur, seance.jour_seance, seance.heure_debut_seance, seance.heure_fin_seance-seance.heure_debut_seance)
+
+    res = Reservation()
+    res.id_poney = poney.id_poney
+    res.id_utilisateur = user.id_utilisateur
+    db.session.add(res)
+    db.session.commit()
+
+    res_u = Reservation_Utilisateur()
+    res_u.id_reservation = res.id_reservation
+    res_u.id_utilisateur = user.id_utilisateur
+
+    res_s = Reservation_Seance()
+    res_s.id_reservation = res.id_reservation
+    res_s.id_seance = seance.id_seance
+
+    db.session.add(res_u)
+    db.session.add(res_s)
+    db.session.commit()
+    return redirect(url_for("home"))
+    
