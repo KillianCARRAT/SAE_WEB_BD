@@ -1,20 +1,27 @@
-{% extends 'base.html' %} {% block content %}
-<form method="post" action="{{ url_for('contacter') }}" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <div class="color_white mb-3 form-group">
-        {{ form.concerne.label(class="mb-3") }}
-        {{ form.concerne(size=50, placeholder="Concernés",class="rounded-3") }}
-    </div>
-    <div class="color_white mb-3 form-group">
-        {{ form.sujet.label(class="mb-3") }}
-        {{ form.sujet(size=50, placeholder="Sujet",class="rounded-3") }}
-    </div>
-    <div class="color_white mb-3 form-group">
-        {{ form.contenu.label(class="mb-3") }}
-        {{ form.contenu(size=50, placeholder="Contenu",class="rounded-3") }}
-    </div>
-    <div class="d-flex justify-content-center mb-3 form-group">
-        {{ form.submit }}
-    </div>
-</form>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <form method="post" action="{{ url_for('contacter') }}" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+        {{ form.hidden_tag() }}
+        
+        <div class="mb-3">
+            {{ form.concerne.label(class="form-label fw-bold") }}
+            {{ form.concerne(class="form-select rounded-3", style="max-height: 200px; overflow-y: auto;") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.sujet.label(class="form-label fw-bold") }}
+            {{ form.sujet(size=50, placeholder="Sujet", class="form-control rounded-3") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.contenu.label(class="form-label fw-bold") }}
+            {{ form.contenu(size=50, placeholder="Message", class="form-control rounded-3") }}
+        </div>
+
+        <div class="text-center d-flex justify-content-start">
+            {{ form.submit(class="couleur-btn px-5") }}
+        </div>
+    </form>
+</div>
 {% endblock %}
