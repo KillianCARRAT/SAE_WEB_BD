@@ -1,4 +1,5 @@
 from src.app import db
+from datetime import datetime, date
 
 class Poney(db.Model):
     __tablename__ = "PONEY"
@@ -9,17 +10,24 @@ class Poney(db.Model):
 
     les_reservations = db.relationship('Reservation', back_populates='poney', lazy=True)
 
-    def getPoney(poids, jour, heure, duree):
+    def getPoney(poids, seance):
         poneys = Poney.query.all()
-        for poney in poneys():
-            if poney.capacite_poney >=poids and poney.getPause(jour, heure, duree):
+        for poney in poneys:
+            if int(poney.capacite_poney) >= int(poids) and poney.getPause(seance):
                 return poney
         return None
     
-    def getPause(self, jour, heure, duree):
+    def getPause(self, seance):
         for res in self.les_reservations:
-            if res.seance.jour_seance == jour:
-                if (res.seance.heure_fin_seance - heure) > -2 or ((heure+duree) - res.seance.heure_debut_seance) > -2:
+            for s in res.seance:
+                # Combiner les heures avec une date fictive
+                heure_fin_s = datetime.combine(date.today(), s.seance.heure_fin_seance)
+                heure_debut_seance = datetime.combine(date.today(), seance.heure_debut_seance)
+                heure_fin_seance = datetime.combine(date.today(), seance.heure_fin_seance)
+                heure_debut_s = datetime.combine(date.today(), s.seance.heure_debut_seance)
+
+                # Calculer les différences et appliquer les conditions
+                if (heure_fin_s - heure_debut_seance).total_seconds() > -2 * 3600 or (heure_fin_seance - heure_debut_s).total_seconds() > -2 * 3600:
                     return False
         return True
 

@@ -317,7 +317,7 @@ def inscrire_cours(id_seance):
     seance = Seance.query.get(id_seance)
     user = current_user
 
-    poney = Poney.getPoney(user.poids_utilisateur, seance.jour_seance, seance.heure_debut_seance, seance.heure_fin_seance-seance.heure_debut_seance)
+    poney = Poney.getPoney(user.poids_utilisateur, seance)
 
     res = Reservation()
     res.id_poney = poney.id_poney
