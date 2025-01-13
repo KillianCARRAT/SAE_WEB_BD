@@ -1,4 +1,5 @@
 from src.app import db
+from src.models.Date import DateUtils
 
 class Seance(db.Model):
     __tablename__ = "SEANCE"
@@ -17,3 +18,6 @@ class Seance(db.Model):
     
     # Pour un élève
     les_reservations = db.relationship("Reservation_Seance", back_populates="seance", lazy=True)
+
+    def getDate(self):
+        return DateUtils.getDate(self.jour_seance,self.semaine_seance,self.annee_seance)
