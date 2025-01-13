@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="fw-bolder display-3 my-5"><strong>Ajout d'un Poney</strong></h1>
+<form action="{{url_for('ajout_poney')}}" method="post">
+    {{ form.hidden_tag() }}
+    <div class="mx-auto d-flex flex-column m-4 w-75">{{form.id}}</div>
+    <div class="mx-auto d-flex flex-column m-4 w-75">{{form.nom.label}} {{form.nom}}</div>
+    <div class="mx-auto d-flex flex-column m-4 w-75">{{form.capacite.label}} {{form.capacite}}</div>
+    <div class="mx-auto d-flex flex-column m-4 w-75">{{form.submit}}</div>
+</form>
+{% endblock %}
