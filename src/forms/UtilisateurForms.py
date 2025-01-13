@@ -15,6 +15,24 @@ class InscriptionForm(FlaskForm):
     mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
     confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
     email = StringField('Adresse mail', validators=[DataRequired()])
+    def validate(self, extra_validators=None):
+        if not FlaskForm.validate(self, extra_validators=extra_validators):
+            return False
+        if self.mot_de_passe.data != self.confirmation_mot_de_passe.data:
+            self.confirmation_mot_de_passe.errors.append('Les mots de passe ne correspondent pas')
+            return False
+        if Utilisateur.query.filter_by(email_utilisateur=self.email.data).first():
+            self.email.errors.append('Un utilisateur existe déjà avec cette adresse mail')
+            return False
+        return True
+    
+class InscriptionFormAdmin(FlaskForm):
+    id = HiddenField('id')
+    nom_user = StringField('Nom', validators=[DataRequired()])
+    prenom_user = StringField('Prenom', validators=[DataRequired()])
+    mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
+    confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
+    email = StringField('Adresse mail', validators=[DataRequired()])
     role = RadioField('Role')
     def validate(self, extra_validators=None):
         if not FlaskForm.validate(self, extra_validators=extra_validators):

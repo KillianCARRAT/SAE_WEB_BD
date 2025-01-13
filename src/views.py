@@ -12,9 +12,11 @@ import os
 from functools import wraps
 from flask import abort
 from flask import jsonify
+from sqlalchemy import or_
+
 
 #Les imports des formulaires
-from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword
+from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword, InscriptionFormAdmin
 from .forms.ReservationForms import AjoutSeance
 from .forms.ContactForms import ContactForm
 from .forms.PoneyForm import PoneyForm
@@ -37,7 +39,7 @@ def roles(*roles):
     Returns:
         decorator : La fonction décorée
     Examples:
-        >>> @roles("Administrateur","Organisateur")
+        >>> @roles("Administrateur","Moniteur")
         >>> def home():
         >>>     return render_template('home.html')
     """
@@ -71,8 +73,11 @@ def login():
 
 @app.route('/signin', methods=['GET','POST'])
 def signin():
-    f = InscriptionForm()
-    f.role.choices =[(role.id_role, role.name) for role in Role.query.all()]
+    if current_user.is_authenticated and current_user.is_admin():
+        f = InscriptionFormAdmin()
+        f.role.choices = [(role.id_role, role.name) for role in Role.query.all()]
+    else:
+        f = InscriptionForm()
     print("la")
     if f.validate_on_submit():
         print("la")
@@ -83,10 +88,15 @@ def signin():
             u.prenom_utilisateur = f.prenom_user.data
             u.mdp_utilisateur = sha256(f.mot_de_passe.data.encode()).hexdigest()
             u.email_utilisateur = f.email.data
-            u.role_id = f.role.data
+            if current_user.is_authenticated and current_user.is_admin():
+                u.role_id = f.role.data
+            else:
+                u.role_id = 3
             db.session.add(u)
             db.session.commit()
             return redirect(url_for('login'))
+    if current_user.is_authenticated and current_user.is_admin():
+        return render_template('signin_admin.html', form=f)
     return render_template('signin.html', form=f)
 
 @app.route('/logout')
@@ -107,7 +117,7 @@ security = Security(app, user_datastore)
 
 @app.route('/home', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
+@roles("Administrateur","Client","Moniteur")
 def home():
     """Renvoie la page d'accueil
 
@@ -137,7 +147,7 @@ def mdp_reset():
 
 @app.route('/mdp-modif', methods=['GET','POST'])
 @login_required
-@roles("Administrateur", "Organisateur")
+@roles("Administrateur", "Moniteur")
 def mdp_modif():
     f = UpdatePassword()
     if f.validate_on_submit():
@@ -171,7 +181,7 @@ def modifier_profil():
 
 @app.route('/home/ajout_seance', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
+@roles("Administrateur","Moniteur")
 def ajout_seance():
     """Renvoie la page d'ajout de séance
 
@@ -179,10 +189,11 @@ def ajout_seance():
         ajout_seance.html: Une page d'ajout de séance
     """
     f = AjoutSeance()
-    f.moniteur_id.choices = [(user.id_utilisateur, user.nom_utilisateur + " " + user.prenom_utilisateur) for user in Utilisateur.query.all()] # ! Filtrer les moniteurs
+    f.moniteur_id.choices = [(user.id_utilisateur, user.nom_utilisateur + " " + user.prenom_utilisateur) for user in Utilisateur.query.filter(Utilisateur.role_id==3)]
     f.moniteur_id.data = current_user.id_utilisateur
     if f.validate_on_submit():
         if f.hebdomadaire_seance.data:
+            print("hebdo")
             date_debut = f.date_debut_seance.data
             date_fin = f.date_fin_seance.data
             jour_seance = f.jour_seance.data
@@ -217,7 +228,7 @@ def ajout_seance():
 
 @app.route('/home/voir_seances', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
+@roles("Administrateur","Moniteur")
 def voir_seances():
     """Renvoie la page de visualisation des séances
 
@@ -281,7 +292,7 @@ def seance(id_seance):
 
 @app.route('/home/ajout_poney', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
+@roles("Administrateur","Moniteur")
 def ajout_poney():
     f = PoneyForm()
     if f.validate_on_submit():
@@ -295,7 +306,39 @@ def ajout_poney():
 
 @app.route('/home/voir_poneys', methods=['GET','POST'])
 @login_required
-@roles("Administrateur","Organisateur")
+@roles("Administrateur","Moniteur")
 def voir_poneys():
     poneys = Poney.query.all()
     return render_template('les_poney.html', poneys=poneys)
+
+@app.route('/home/poney/<int:id_poney>', methods=['GET','POST'])
+@login_required
+@roles("Administrateur","Moniteur")
+def poney(id_poney):
+    poney = Poney.query.get(id_poney)
+    form = PoneyForm()
+    form.nom.data = poney.nom_poney
+    form.capacite.data = poney.capacite_poney
+    if form.validate_on_submit():
+        poney.nom_poney = form.nom.data
+        poney.capacite_poney = form.capacite.data
+        db.session.commit()
+        return redirect(url_for('voir_poneys'))
+    return render_template('poney.html', poney=poney, form=form)
+
+@app.route('/home/del/poney/<int:id_poney>', methods=['GET','POST'])
+@login_required
+@roles("Administrateur","Moniteur")
+def del_poney(id_poney):
+    poney = Poney.query.get(id_poney)
+    db.session.delete(poney)
+    db.session.commit()
+    return redirect(url_for('voir_poneys'))
+
+@app.route('/home/voir_utilisateurs', methods=['GET','POST'])
+@login_required
+@roles("Administrateur")
+def voir_utilisateurs():
+    """Renvoie la page de visualisation des Clients et Moniteurs"""
+    utilisateurs = Utilisateur.query.filter(or_(Utilisateur.role_id == 1, Utilisateur.role_id == 3)).all()    
+    return render_template('les_utilisateurs.html', utilisateurs=utilisateurs)
