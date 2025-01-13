@@ -21,6 +21,7 @@ from .forms.ReservationForms import AjoutSeance
 from .models.Utilisateur import Utilisateur
 from .models.Role import Role
 from .models.Seance import Seance
+from .models.Date import DateUtils
 
 def roles(*roles):
     """Vérifie si l'utilisateur a un rôle parmi ceux passés en paramètre
@@ -203,9 +204,6 @@ def ajout_seance():
             seance.moniteur_id = f.moniteur_id.data
             db.session.add(seance)
         db.session.commit()
-
-
-
         return redirect(url_for('home'))
     return render_template('ajout_seance.html', form=f)
 
@@ -220,13 +218,14 @@ def voir_seances():
     """
     return render_template('seances.html')
 
-@app.route('/seances/<int:semaine>', methods=['GET','POST'])
-@app.route('/seances', methods=['GET','POST']) # ! refaire la route pour prendre en parameètre une semaine
-def seances(semaine):
-    if semaine == None:
+@app.route('/seances/', methods=['GET','POST'], defaults={'annee':None,'semaine': None})
+@app.route('/seances/<int:annee>/<int:semaine>', methods=['GET','POST'])
+def seances(annee,semaine):
+    if semaine == None or annee == None:
+        annee = datetime.now().year
         semaine = datetime.now().isocalendar()[1]
-        print(semaine)
-    Seances = Seance.query.filter_by(semaine_seance=semaine).all()
+    print(annee, semaine)
+    Seances = Seance.query.filter_by(annee_seance=annee, semaine_seance=semaine).all()
     agenda = [[] for _ in range(6)]
     for seance in Seances:
         jour = seance.jour_seance
@@ -235,7 +234,17 @@ def seances(semaine):
             "heure_debut_seance": seance.heure_debut_seance.strftime('%H:%M:%S'),
             "heure_fin_seance": seance.heure_fin_seance.strftime('%H:%M:%S'),
             "nb_places_seance": seance.nb_places_seance,
-            "moniteur_id": seance.moniteur_id
+            "moniteur_id": seance.moniteur_id,
+            "active": seance.active == 1
         }
         agenda[jour-1].append(seance_dict)
+    print(agenda)
     return jsonify(agenda)
+
+@app.route('/home/seance/<int:id_seance>', methods=['GET','POST'])
+def seance(id_seance):
+    seance = Seance.query.get(id_seance)
+    print(seance.annee_seance, seance.semaine_seance, seance.jour_seance)
+    moniteur = Utilisateur.query.get(seance.moniteur_id)
+    date = DateUtils.getDate(seance.jour_seance, seance.semaine_seance, seance.annee_seance)
+    return render_template('seance.html', seance=seance, moniteur=moniteur, date=date)
