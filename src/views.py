@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, request
 from flask_security import login_required, current_user, roles_required,  logout_user, login_user
 from flask import render_template, redirect, url_for, request, send_from_directory
 from datetime import datetime
+from datetime import timedelta
 from hashlib import sha256
 from flask_security import Security, SQLAlchemySessionUserDatastore
 from werkzeug.utils import secure_filename
@@ -10,6 +11,7 @@ from werkzeug.datastructures import FileStorage
 import os
 from functools import wraps
 from flask import abort
+from flask import jsonify
 
 #Les imports des formulaires
 from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword
@@ -21,6 +23,8 @@ from .models.Utilisateur import Utilisateur
 from .models.Role import Role
 from .models.Seance import Seance
 from .models.Contact import Contact
+from .models.Date import DateUtils
+
 
 def roles(*roles):
     """Vérifie si l'utilisateur a un rôle parmi ceux passés en paramètre
@@ -173,13 +177,35 @@ def ajout_seance():
     f.moniteur_id.choices = [(user.id_utilisateur, user.nom_utilisateur + " " + user.prenom_utilisateur) for user in Utilisateur.query.all()] # ! Filtrer les moniteurs
     f.moniteur_id.data = current_user.id_utilisateur
     if f.validate_on_submit():
-        seance = Seance()
-        seance.jour_seance = f.jour_seance.data
-        seance.heure_debut_seance = f.heure_debut_seance.data
-        seance.heure_fin_seance = f.heure_fin_seance.data
-        seance.nb_places_seance = f.nb_places_seance.data
-        seance.moniteur_id = f.moniteur_id.data
-        db.session.add(seance)
+        if f.hebdomadaire_seance.data:
+            date_debut = f.date_debut_seance.data
+            date_fin = f.date_fin_seance.data
+            jour_seance = f.jour_seance.data
+            print(date_debut, date_fin, jour_seance)
+            date = date_debut
+            while date <= date_fin:
+                if (date.weekday()+1) == jour_seance:
+                    seance = Seance()
+                    seance.annee_seance = date.year
+                    seance.semaine_seance = date.isocalendar()[1]
+                    seance.jour_seance = jour_seance
+                    seance.heure_debut_seance = f.heure_debut_seance.data
+                    seance.heure_fin_seance = f.heure_fin_seance.data
+                    seance.nb_places_seance = f.nb_places_seance.data
+                    seance.moniteur_id = f.moniteur_id.data
+                    db.session.add(seance)
+                date += timedelta(days=1)
+        else:
+            date = f.semaine_seance.data
+            seance = Seance()
+            seance.annee_seance = date.year
+            seance.semaine_seance = date.isocalendar()[1]
+            seance.jour_seance = date.weekday()+1
+            seance.heure_debut_seance = f.heure_debut_seance.data
+            seance.heure_fin_seance = f.heure_fin_seance.data
+            seance.nb_places_seance = f.nb_places_seance.data
+            seance.moniteur_id = f.moniteur_id.data
+            db.session.add(seance)
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('ajout_seance.html', form=f)
@@ -193,12 +219,7 @@ def voir_seances():
     Returns:
         voir_seances.html: Une page de visualisation des séances
     """
-    seances = Seance.query.all()
-    planning = [[] for i in range(7)]
-    for seance in seances:
-        planning[seance.jour_seance-1].append(seance)
-    print(planning)
-    return render_template('seances.html', les_seances=planning)
+    return render_template('seances.html')
 
 @app.route('/home/contacter', methods=['GET','POST'])
 def contacter():
@@ -220,3 +241,35 @@ def contacter():
             db.session.commit()
             return redirect(url_for('home'))
     return render_template('contacter.html', form = f)
+
+
+@app.route('/seances/', methods=['GET','POST'], defaults={'annee':None,'semaine': None})
+@app.route('/seances/<int:annee>/<int:semaine>', methods=['GET','POST'])
+def seances(annee,semaine):
+    if semaine == None or annee == None:
+        annee = datetime.now().year
+        semaine = datetime.now().isocalendar()[1]
+    print(annee, semaine)
+    Seances = Seance.query.filter_by(annee_seance=annee, semaine_seance=semaine).all()
+    agenda = [[] for _ in range(6)]
+    for seance in Seances:
+        jour = seance.jour_seance
+        seance_dict = {
+            "id_seance": seance.id_seance,
+            "heure_debut_seance": seance.heure_debut_seance.strftime('%H:%M:%S'),
+            "heure_fin_seance": seance.heure_fin_seance.strftime('%H:%M:%S'),
+            "nb_places_seance": seance.nb_places_seance,
+            "moniteur_id": seance.moniteur_id,
+            "active": seance.active == 1
+        }
+        agenda[jour-1].append(seance_dict)
+    print(agenda)
+    return jsonify(agenda)
+
+@app.route('/home/seance/<int:id_seance>', methods=['GET','POST'])
+def seance(id_seance):
+    seance = Seance.query.get(id_seance)
+    print(seance.annee_seance, seance.semaine_seance, seance.jour_seance)
+    moniteur = Utilisateur.query.get(seance.moniteur_id)
+    date = DateUtils.getDate(seance.jour_seance, seance.semaine_seance, seance.annee_seance)
+    return render_template('seance.html', seance=seance, moniteur=moniteur, date=date)
