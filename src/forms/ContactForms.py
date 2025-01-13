@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired
 
 class ContactForm(FlaskForm):
     id = HiddenField('id')
-    concerne = SelectField('Concerné', choices=[(1,"Moniteur"), (2, "Administrateur")], coerce=int, validators=[DataRequired()])
+    concerne = SelectField('Personne à contacter', choices=[(1,"Moniteur"), (2, "Administrateur")], coerce=int, validators=[DataRequired()])
     sujet = StringField('Sujet', validators=[DataRequired()])
-    contenu = TextAreaField("Contenu", validators=[DataRequired()])
+    contenu = TextAreaField("Message", validators=[DataRequired()])
     submit = SubmitField('Envoyer')
     
