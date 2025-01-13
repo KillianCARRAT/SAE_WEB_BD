@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+<div>
+    <h1>Les séances à venir</h1>
+</div>
+<div>
+    <div>
+        {% for seance in seances %}
+        <a class="btn" href="{{ url_for('page_seance', id_seance=seance.id_seance) }}">
+            <div>
+                <h3>Cours de: {{ seance.moniteur.prenom_utilisateur }} {{ seance.moniteur.nom_utilisateur }} du {{ seance.jour_seance }}</h3>
+            </div>
+            <div>
+                <label>De {{ seance.heure_debut_seance }} à {{ seance.heure_fin_seance }}</label>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
