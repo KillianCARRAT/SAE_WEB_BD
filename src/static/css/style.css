@@ -1,22 +1,26 @@
 .texte-accueil {
-    border: 3px solid #c79c89;
-    border-radius: 2em;
+  border: 3px solid #c79c89;
+  border-radius: 2em;
 }
 
 .image-accueil-right {
-    border-top-right-radius: 2em;
-    border-bottom-right-radius: 2em;
+  border-top-right-radius: 2em;
+  border-bottom-right-radius: 2em;
 }
 
 .image-accueil-left {
-    border-top-left-radius: 2em;
-    border-bottom-left-radius: 2em;
+  border-top-left-radius: 2em;
+  border-bottom-left-radius: 2em;
 }
 
 .couleur-btn {
-    padding: 0.5em;
-    background-color: #3e2317;
-    color: white;
-    border: 1px solid black;
-    border-radius: 5px;
+  padding: 0.5em;
+  background-color: #3e2317;
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none !important;
 }
