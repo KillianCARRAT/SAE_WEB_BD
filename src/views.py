@@ -17,6 +17,7 @@ from flask import jsonify
 from .forms.UtilisateurForms import InscriptionForm, ConnexionForm, UpdateUser, UpdatePassword
 from .forms.ReservationForms import AjoutSeance
 from .forms.ContactForms import ContactForm
+from .forms.PoneyForm import PoneyForm
 
 #Les imports des modèles
 from .models.Utilisateur import Utilisateur
@@ -24,6 +25,7 @@ from .models.Role import Role
 from .models.Seance import Seance
 from .models.Contact import Contact
 from .models.Date import DateUtils
+from .models.Poney import Poney
 
 
 def roles(*roles):
@@ -71,8 +73,11 @@ def login():
 def signin():
     f = InscriptionForm()
     f.role.choices =[(role.id_role, role.name) for role in Role.query.all()]
+    print("la")
     if f.validate_on_submit():
+        print("la")
         if f.validate():
+            print("la")
             u = Utilisateur()
             u.nom_utilisateur = f.nom_user.data
             u.prenom_utilisateur = f.prenom_user.data
@@ -273,3 +278,24 @@ def seance(id_seance):
     moniteur = Utilisateur.query.get(seance.moniteur_id)
     date = DateUtils.getDate(seance.jour_seance, seance.semaine_seance, seance.annee_seance)
     return render_template('seance.html', seance=seance, moniteur=moniteur, date=date)
+
+@app.route('/home/ajout_poney', methods=['GET','POST'])
+@login_required
+@roles("Administrateur","Organisateur")
+def ajout_poney():
+    f = PoneyForm()
+    if f.validate_on_submit():
+        p = Poney()
+        p.nom_poney = f.nom.data
+        p.capacite_poney = f.capacite.data
+        db.session.add(p)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('ajout_poney.html', form=f)
+
+@app.route('/home/voir_poneys', methods=['GET','POST'])
+@login_required
+@roles("Administrateur","Organisateur")
+def voir_poneys():
+    poneys = Poney.query.all()
+    return render_template('les_poney.html', poneys=poneys)
