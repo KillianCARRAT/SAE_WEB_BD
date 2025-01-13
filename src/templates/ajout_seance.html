@@ -1,11 +1,9 @@
 {% extends 'base.html' %} {% block content %}
-<script src="{{ url_for('static', filename='hebdo.js')}}" crossorigin="anonymous" defer></script>
-
-<div class="d-flex flex-column align-items-center">
-    <h1 class="fw-bolder display-3 my-5"><strong>Mes Séances Moniteurs</strong></h1>
+<div class="container mt-5">
+    <h1 class="fw-bolder display-3 text-center my-5"><strong>Mes Séances Moniteurs</strong></h1>
 
     <div class="d-flex justify-content-center">
-        <form action="{{ url_for('ajout_seance') }}" method="post">
+        <form action="{{ url_for('ajout_seance') }}" method="post" class="p-4 border rounded shadow-sm bg-light w-50">
             {{ form.hidden_tag() }}
             <div class="mx-auto d-flex flex-column m-4 w-50">
                 {{ form.hebdomadaire_seance.label(class="form-label") }} {{
@@ -23,26 +21,28 @@
                 {{ form.semaine_seance.label(class="form-label") }} {{ form.semaine_seance(class="form-control") }}
             </div>
 
-            <div class="mx-auto d-flex flex-column m-4 w-50">
-                {{ form.heure_debut_seance.label(class="form-label") }} {{ form.heure_debut_seance(class="form-control")
-                }}
+            <div class="mb-4">
+                {{ form.heure_debut_seance.label(class="form-label fw-bold") }} {{
+                form.heure_debut_seance(class="form-control rounded-3") }}
             </div>
 
-            <div class="mx-auto d-flex flex-column m-4 w-50">
-                {{ form.heure_fin_seance.label(class="form-label") }} {{ form.heure_fin_seance(class="form-control") }}
+            <div class="mb-4">
+                {{ form.heure_fin_seance.label(class="form-label fw-bold") }} {{
+                form.heure_fin_seance(class="form-control rounded-3") }}
             </div>
 
-            <div class="mx-auto d-flex flex-column m-4 w-50">
-                {{ form.nb_places_seance.label(class="form-label") }} {{ form.nb_places_seance(class="form-control") }}
+            <div class="mb-4">
+                {{ form.nb_places_seance.label(class="form-label fw-bold") }} {{
+                form.nb_places_seance(class="form-control rounded-3") }}
             </div>
 
-            <div class="mx-auto d-flex flex-column m-4 w-50">
-                {{ form.moniteur_id.label(class="form-label") }} {{ form.moniteur_id(class="form-control") }}
+            <div class="mb-4">
+                {{ form.moniteur_id.label(class="form-label fw-bold") }} {{ form.moniteur_id(class="form-control
+                rounded-3") }}
             </div>
 
-            {{ form.submit(class="btn btn-primary") }}
+            <div class="text-center">{{ form.submit(class="couleur-btn") }}</div>
         </form>
     </div>
-
-    {% endblock %}
 </div>
+{% endblock %}
