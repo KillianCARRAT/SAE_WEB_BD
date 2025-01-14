@@ -64,4 +64,27 @@
         <main>{% block content %} {% endblock %}</main>
         <script src="{{ url_for('static', filename='popup.js')}}" crossorigin="anonymous" defer></script>
     </body>
+    {% block footer %}
+    <footer>
+        <div>
+            <h3>Contact</h3>
+        </div>
+        <div>
+            <label>Adresse: </label>
+            <label>SOLOGNE</label>
+        </div>
+        <div>
+            <h3>Email:</h3>
+        </div>
+        <div>
+            <label>exemple@gmail.com</label>
+        </div>
+        <div>
+            <h3>Téléphone</h3>
+        </div>
+        <div>
+            <label>Tel: 06 12 34 56 78</label>
+        </div>
+    </footer>
+    {% endblock %}
 </html>
