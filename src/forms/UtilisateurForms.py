@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_security import current_user
-from wtforms import StringField, HiddenField, FileField, PasswordField, RadioField
+from wtforms import StringField, HiddenField, FileField, PasswordField, RadioField, IntegerField
 from wtforms.validators import DataRequired
 from hashlib import sha256
 from src.models.Role import Role
@@ -14,6 +14,7 @@ class InscriptionForm(FlaskForm):
     prenom_user = StringField('Prenom', validators=[DataRequired()])
     mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
     confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
+    poids_user = IntegerField("Poids", validators=[DataRequired()])
     email = StringField('Adresse mail', validators=[DataRequired()])
     def validate(self, extra_validators=None):
         if not FlaskForm.validate(self, extra_validators=extra_validators):
@@ -33,6 +34,7 @@ class InscriptionFormAdmin(FlaskForm):
     mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
     confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
     email = StringField('Adresse mail', validators=[DataRequired()])
+    poids_user = IntegerField("Poids", validators=[DataRequired()])
     role = RadioField('Role')
     def validate(self, extra_validators=None):
         if not FlaskForm.validate(self, extra_validators=extra_validators):
@@ -60,6 +62,7 @@ class UpdateUser(FlaskForm):
     nom_user = StringField("Nom", validators=[DataRequired()])
     prenom_user = StringField('Prenom', validators=[DataRequired()])
     email = StringField('Adresse mail', validators=[DataRequired()])
+    poids_user = IntegerField("Poids", validators=[DataRequired()])
     def validate(self, extra_validators=None):
         if not super().validate(extra_validators=extra_validators):
             return False

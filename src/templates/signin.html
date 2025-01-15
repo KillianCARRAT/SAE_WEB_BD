@@ -41,6 +41,11 @@
             </div>
 
             <div class="mb-3">
+                {{ form.poids_user.label(class="form-label") }}
+                {{ form.poids_user(size=50, placeholder="Poids", class="form-control rounded-3") }}
+            </div>  
+
+            <div class="mb-3">
                 {{ form.mot_de_passe.label(class="form-label") }}
                 {{ form.mot_de_passe(size=50, placeholder="Mot de passe", class="form-control rounded-3") }}
             </div>
