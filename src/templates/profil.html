@@ -23,6 +23,11 @@
                 <label for="email" class="form-label fw-bold"> {{ form.email.label }} </label>
                 {{ form.email(class_="form-control rounded-3") }}
             </div>
+                <label for="poids" class="form-label fw-bold"> {{ form.poids_user.label }} </label>
+                {{ form.poids_user(class_="form-control rounded-3") }}
+            <div>
+
+            </div>
 
             <div class="mb-4">
                 <a href="{{ url_for('mdp_modif') }}" class="text-danger text-decoration-none fw-bold">Modifier le mot de
