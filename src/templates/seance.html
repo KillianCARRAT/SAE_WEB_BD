@@ -17,6 +17,9 @@
             </div>
             <a href="/home/seances" class="btn btn-secondary">Retour à la liste des séances</a>
         </div>
+        <a href="{{url_for('inscrire_cours', id_seance=seance.id_seance)}}">
+            <button type="submit">S'inscrire</button>
+        </a>
     </div>
 </div>
 {% endblock %}

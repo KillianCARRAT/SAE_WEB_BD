@@ -22,37 +22,60 @@
                         <h1 class="plc-dark">Grand Galop</h1>
                     </a>
                 </div>
+                {% if current_user.is_authenticated and current_user.is_moniteur() %}
                 <div>
                     <a class="btn" href="{{url_for('ajout_poney')}}">
                         <h2 class="plc-dark">Ajouter poney</h2>
                     </a>
                 </div>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.is_moniteur() %}
                 <div>
                     <a class="btn" href="{{url_for('ajout_seance')}}">
                         <h2 class="plc-dark">Ajouter une séance</h2>
                     </a>
                 </div>
+                {% endif %}
+                {% if current_user.is_authenticated %}
                 <div>
                     <a class="btn" href="{{url_for('voir_seances')}}">
                         <h2 class="plc-dark">Mes séances</h2>
                     </a>
                 </div>
+                {% endif %}
                 <div>
-                    <a class="btn" href="{{ url_for('visualiser_seance') }}">
+                    <a class="btn" href="{{ url_for('voir_toutes_seances') }}">
                         <h2 class="plc-dark">Les séances à venir</h2>
                     </a>
                 </div>
+                {% if not current_user.is_authenticated %}
+                <div>
+                    <a class="btn" href="{{url_for('login')}}">
+                        <h2 class="plc-dark">Se connecter</h2>
+                    </a>
+                </div>
+                {% endif %}
+                {% if not current_user.is_authenticated %}
                 <div>
                     <a class="btn" href="{{url_for('signin')}}">
                         <h2 class="plc-dark">S'inscrire</h2>
                     </a>
                 </div>
+                {% endif %}
+                {% if current_user.is_authenticated %}
                 <div>
-                    <!-- modifier Tom Cook par l'utilisateur liée à la BD -->
                     <a class="btn" href="{{url_for('modifier_profil')}}">
                         {{current_user.nom_utilisateur}} {{current_user.prenom_utilisateur}} {{current_user.role.name}}
                     </a>
                 </div>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.is_admin() %}
+                <div>
+                    <a class="btn" href="{{url_for('signin')}}">
+                        <h2 class="plc-dark">Inscrire un Utilisateur</h2>
+                    </a>
+                </div>
+                {% endif %}
                 <div>
                     <a class="btn" href="{{url_for('contacter')}}">
                         <h2 class="plc-dark">Contacter</h2>

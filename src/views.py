@@ -108,7 +108,7 @@ def logout():
         login : Redirige vers la page de connexion
     """
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 
 # A charger après la définition de la route login
@@ -116,8 +116,6 @@ user_datastore = SQLAlchemySessionUserDatastore(db.session, Utilisateur, Role)
 security = Security(app, user_datastore)
 
 @app.route('/home', methods=['GET','POST'])
-@login_required
-@roles("Administrateur","Client","Moniteur")
 def home():
     """Renvoie la page d'accueil
 
@@ -172,11 +170,13 @@ def modifier_profil():
             user.prenom_utilisateur = f.prenom_user.data
             user.nom_utilisateur = f.nom_user.data
             user.email_utilisateur = f.email.data
+            user.poids_utilisateur = f.poids_user.data
             db.session.commit()
             return redirect(url_for('home'))
     f.nom_user.data = current_user.nom_utilisateur
     f.prenom_user.data = current_user.prenom_utilisateur
     f.email.data = current_user.email_utilisateur 
+    f.poids_user.data = current_user.poids_utilisateur
     return render_template('profil.html', form=f)
 
 @app.route('/home/ajout_seance', methods=['GET','POST'])
@@ -265,7 +265,6 @@ def seances(annee,semaine):
     if semaine == None or annee == None:
         annee = datetime.now().year
         semaine = datetime.now().isocalendar()[1]
-    print(annee, semaine)
     if current_user.role_id == 1:
         seances = []
         les_seances = Seance.query.filter_by(annee_seance=annee, semaine_seance=semaine, moniteur_id=current_user.id_utilisateur).all()
@@ -275,7 +274,6 @@ def seances(annee,semaine):
         seances = []
         reservations = Reservation.query.filter_by(id_utilisateur=current_user.id_utilisateur).all()
         for reservation in reservations:
-            print(reservation.seance)
             seances.append(reservation.seance)
     agenda = [[] for _ in range(6)]
     for seance in seances:
@@ -354,10 +352,6 @@ def voir_utilisateurs():
     utilisateurs = Utilisateur.query.filter(or_(Utilisateur.role_id == 1, Utilisateur.role_id == 3)).all()    
     return render_template('les_utilisateurs.html', utilisateurs=utilisateurs)
 
-@app.route('/home/visualiser_seance', methods=['GET','POST'])
-def visualiser_seance():
-    return render_template('visualiser_seance.html', seances=Seance.query.all())
-
 @app.route('/home/page_seance/<int:id_seance>', methods=['GET','POST'])
 def page_seance(id_seance):
     return render_template('page_seance.html', id_seance=id_seance, seance=Seance.query.get(id_seance))
@@ -377,3 +371,29 @@ def inscrire_cours(id_seance):
     db.session.commit()
     return redirect(url_for("home"))
 
+@app.route('/home/voir_toutes_seances', methods=['GET'])
+def voir_toutes_seances():
+    return render_template('toutes_les_seances.html')
+
+
+@app.route('/toutes_les_seances/', methods=['GET','POST'], defaults={'annee':None,'semaine': None})
+@app.route('/toutes_les_seances/<int:annee>/<int:semaine>', methods=['GET','POST'])
+def toutes_les_seances(annee,semaine):
+    if semaine == None or annee == None:
+        annee = datetime.now().year
+        semaine = datetime.now().isocalendar()[1]
+    seances = Seance.query.all()
+    agenda = [[] for _ in range(6)]
+    for seance in seances:
+        jour = seance.jour_seance
+        seance_dict = {
+            "id_seance": seance.id_seance,
+            "heure_debut_seance": seance.heure_debut_seance.strftime('%H:%M:%S'),
+            "heure_fin_seance": seance.heure_fin_seance.strftime('%H:%M:%S'),
+            "nb_places_seance": seance.nb_places_seance,
+            "moniteur_id": seance.moniteur_id,
+            "active": seance.active == 1
+        }
+        agenda[jour-1].append(seance_dict)
+    print(agenda)
+    return jsonify(agenda)

@@ -26,6 +26,12 @@ class Utilisateur(db.Model, UserMixin):
     
     def is_admin(self):
         return self.role_id == 2
+    
+    def is_moniteur(self):
+        return self.role_id == 1
+    
+    def is_client(self):
+        return self.role_id == 3
 
 
     def get_last_id():
