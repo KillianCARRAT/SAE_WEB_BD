@@ -1,39 +1,35 @@
 {% extends 'base.html' %} {% block content %}
-<div class="d-flex flex-column align-items-center mx-4">
-    <h1 class="fw-bolder display-3 my-5"><strong>Accueil</strong></h1>
-    <h3 class="fst-italic fw-light">Bienvenue au Poney Club Grand Galop</h3>
+<div class="container my-5">
+    <h1 class="fw-bolder display-3 text-center mb-4"><strong>Accueil</strong></h1>
+    <h3 class="fst-italic fw-light text-center mb-5">Bienvenue au Poney Club Grand Galop</h3>
 
-    <div class="d-flex align-items-center p-0 texte-accueil ">
-        <div class="fs-3 flex-fill m-4 p-4 w-50" style="text-align: justify;">
-            <p class="">Situé au cœur de la Sologne, dans un cadre naturel et apaisant, le Poney Club Grand
-                Galop est l'endroit rêvé pour tous les amoureux d'équitation, petits et grands.</p>
-            <p class="">
-                Depuis plusieurs années, nous partageons notre passion des chevaux et des poneys avec nos adhérents.
-                Affilié à la Fédération Française d'Équitation (FFE), notre club accueille cavaliers débutants comme
-                confirmés pour vivre des moments inoubliables en selle.</p>
-            <p class="">
-                Prenez les rênes de votre aventure dès aujourd'hui !
-            </p>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card texte-accueil p-4">
+                <p>Situé au cœur de la Sologne, dans un cadre naturel et apaisant, le Poney Club Grand Galop est l'endroit rêvé pour tous les amoureux d'équitation, petits et grands.</p>
+                <p>Depuis plusieurs années, nous partageons notre passion des chevaux et des poneys avec nos adhérents. Affilié à la Fédération Française d'Équitation (FFE), notre club accueille cavaliers débutants comme confirmés pour vivre des moments inoubliables en selle.</p>
+                <p>Prenez les rênes de votre aventure dès aujourd'hui !</p>
+            </div>
         </div>
-        <img class="img-fluid flex-fill w-50 image-accueil-right"
-            src="{{url_for('static', filename='img/chevaux-accueil1.webp')}}" alt="logo">
+        <div class="col-md-6 d-flex align-items-center">
+            <img class="img-fluid rounded-end image-accueil-right" src="{{url_for('static', filename='img/chevaux-accueil1.webp')}}" alt="Chevaux">
+        </div>
     </div>
 
-
-    <div class="d-flex align-items-center p-0 my-2 texte-accueil">
-        <img class="img-fluid flex-fill w-50 image-accueil-left" src="{{url_for('static', filename='img/chevaux-accueil2.webp')}}"
-            alt="logo">
-        <div class="fs-3 flex-fill m-4 w-50" style="text-align: justify;">
-            <h3>Prêt à monter en selle ?🐴✨</h3>
-            <p class="">Chez Grand Galop, nous vous offrons une expérience unique d'équitation, dans un cadre chaleureux
-                et sécurisé. Que vous soyez débutant ou passionné, découvrez nos cours adaptés à tous les niveaux et
-                réservez votre créneau en quelques clics.
-            </p>
-            <p class="">Rejoignez-nous dès maintenant et réservez votre cours !</p>
-            <form><button class ="m-4 couleur-btn" type="submit">Réserver</button></form>
+    <div class="row">
+        <div class="col-md-6 d-flex align-items-center mb-4">
+            <img class="img-fluid rounded-start image-accueil-left" src="{{url_for('static', filename='img/chevaux-accueil2.webp')}}" alt="Chevaux">
         </div>
-
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h3 class="mb-3">Prêt à monter en selle ? 🐴✨</h3>
+                <p>Chez Grand Galop, nous vous offrons une expérience unique d'équitation, dans un cadre chaleureux et sécurisé. Que vous soyez débutant ou passionné, découvrez nos cours adaptés à tous les niveaux et réservez votre créneau en quelques clics.</p>
+                <p>Rejoignez-nous dès maintenant et réservez votre cours !</p>
+                <div class="text-center">
+                    <a href="{{ url_for('voir_seances') }}" class="btn couleur-btn btn-lg">Réserver</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}

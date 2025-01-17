@@ -1,37 +1,98 @@
 <!DOCTYPE html>
 <html lang="fr">
+    <head>
+        {% block head %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>StageFlow</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo.svg" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff" />
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}" />
+        {% endblock %} {% block styles %}
+        <!-- Bootstrap CSS -->
+        {{ bootstrap.load_css() }} {% endblock %}
+    </head>
 
-<head>
-    {% block head %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>StageFlow</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo.svg">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
-    {% endblock %}
-    {% block styles %}
-    <!-- Bootstrap CSS -->
-    {{ bootstrap.load_css() }}
-    {% endblock %}
-</head>
-
-<body class="container d-flex flex-column align-items-stretch">
-    <header class="d-flex flex-column align-items-center mt-0">
-        <div class="d-flex justify-content-center align-items-center m-5">
-            <img class="my-2 img-fluid" src="{{url_for('static', filename='img/logo.webp')}}" alt="logo de StageFlow">
-            <div class="d-flex flex-column ms-3"><strong
-                    class="plc-dark font-weight-bolder display-3 fw-bolder ms-2">Poney Club</strong>
-                <strong class="plc-dark font-weight-bolder display-3 fw-bolder ms-2">Grand Galop</strong>
+    <body class="d-flex flex-column min-vh-100">
+        <header class="d-flex flex-column align-items-center">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow w-100">
+                <div class="container-fluid">
+                    <a class="navbar-brand me-3" href="{{ url_for('home') }}">
+                        <img
+                            src="{{ url_for('static', filename='img/logo.webp') }}"
+                            alt="Grand Galop"
+                            width="30"
+                            height="30"
+                            class="d-inline-block align-text-top"
+                        />
+                        Grand Galop
+                    </a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            {% if not current_user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('login') }}">Se Connecter</a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('signin') }}">S'inscrire</a>
+                            </li>
+                            {% endif %}
+                            {% if current_user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a href="{{ url_for('contacter') }}" class="nav-link">
+                                    Contacter
+                                </a>
+                            </li>
+                            {% if current_user.is_authenticated and (current_user.is_admin() or current_user.is_moniteur()) %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('voir_poneys') }}">Voir Poneys</a>
+                            </li>
+                            {% endif %}
+                            {% if current_user.is_authenticated and current_user.is_admin() %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('voir_utilisateurs') }}">Voir Utilisateurs</a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a href="{{ url_for('modifier_profil') }}" class="nav-link profile-link">
+                                    {{ current_user.nom_utilisateur }} {{ current_user.prenom_utilisateur }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <img
+                    class="my-1 img-fluid"
+                    src="{{url_for('static', filename='img/logo.webp')}}"
+                    alt="logo de StageFlow"
+                />
+                <div class="d-flex flex-column ms-2">
+                    <strong class="plc-dark font-weight-bolder display-4 fw-bolder ms-2">Poney Club</strong> <!-- Modifier display-3 à display-4 -->
+                    <strong class="plc-dark font-weight-bolder display-4 fw-bolder ms-2">Grand Galop</strong> <!-- Modifier display-3 à display-4 -->
+                </div>
             </div>
-        </div>
+        </header>
+        <main class="flex-fill">
+            <div class="container">{% block content %} {% endblock %}</div>
+        </main>
 
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-</body>
+        <!-- Supprimer le pied de page -->
 
+        <script src="{{ url_for('static', filename='popup.js')}}" crossorigin="anonymous" defer></script>
+    </body>
 </html>

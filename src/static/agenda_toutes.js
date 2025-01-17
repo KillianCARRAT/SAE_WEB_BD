@@ -10,7 +10,7 @@ let currentWeek = (function getISOWeek(date) {
 
 // Charge les données pour une année et une semaine données
 function updateAgenda(year, week) {
-  fetch(`/seances/${year}/${week}`, {
+  fetch(`/toutes_les_seances/${year}/${week}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   })
@@ -164,11 +164,9 @@ function displayAgenda(seances) {
 
           const seanceCell = document.createElement("div");
           seanceCell.textContent = `${seance.heure_debut_seance} - ${seance.heure_fin_seance}`;
-          seanceCell.style.border = "1px solid black";
-          seanceCell.style.backgroundColor = "#cfd8dc";
+          seanceCell.classList.add("bg-info", "text-white", "p-1", "rounded");
           seanceCell.style.gridRow = `${startRow} / span ${halfHours}`;
           seanceCell.style.gridColumn = `${jourIndex + 2}`;
-          seanceCell.classList.add("bg-info", "text-white", "p-1", "rounded");
           container.appendChild(seanceCell);
           seanceCell.addEventListener("click", () => {
             console.log(seance);
@@ -179,7 +177,7 @@ function displayAgenda(seances) {
     }
   });
 
-  document.getElementById("agenda").appendChild(container);
+  document.getElementById("agenda_toutes").appendChild(container);
 }
 
 // Ajout d'une zone pour les boutons et champs de navigation
@@ -228,7 +226,7 @@ dateInput.addEventListener("change", () => {
   update();
 });
 
-document.getElementById("agenda").appendChild(formContainer);
+document.getElementById("agenda_toutes").appendChild(formContainer);
 
 // Lancement initial
 receiveAgendaJsonApi();

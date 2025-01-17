@@ -1,56 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-
-    <head>
-        {% block head %}
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>StageFlow</title>
+        <title>Grand Galop - Inscription Administrateur</title>
         <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo.svg" />
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="theme-color" content="#ffffff" />
-        <link rel="stylesheet" href="{{ url_for('static',filename='style.css')}}" />
-        {% endblock %} {% block styles %}
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}" />
+        {% block styles %}
         <!-- Bootstrap CSS -->
-        {{ bootstrap.load_css() }} {% endblock %}
+        {{ bootstrap.load_css() }} 
+        {% endblock %}
     </head>
 
-    <body class="mx-auto w-25 d-flex flex-column align-items-center div-dark rounded-4 mb-3 p-4">
-        <div>
-            <h1 class="fw-bolder display-4 m-4 color_white">Inscrire un compte</h1>
-        </div>
+    <body class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+        <div class="card p-5 shadow-lg rounded-4" style="width: 100%; max-width: 500px;">
+            <h1 class="fw-bolder display-4 text-center mb-4 color_white">Inscrire un compte Administrateur</h1>
 
-        <form method="post" action="{{ url_for('signin') }}" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            <div class="color_white mb-3 form-group">
-                {{ form.nom_user.label(class="mb-3") }} {{ form.nom_user(size=50, placeholder="Nom",class="rounded-3")
-                }}
-            </div>
-            <div class="color_white mb-3 form-group">
-                {{ form.prenom_user.label(class="mb-3") }} {{ form.prenom_user(size=50, placeholder="Prenom",
-                class="rounded-3") }}
-            </div>
-            <div class="color_white mb-3 form-group">
-                {{ form.mot_de_passe.label(class="mb-3") }} {{ form.mot_de_passe(size=50, placeholder="Mot de passe",
-                class="rounded-3") }}
-            </div>
-            <div class="color_white mb-3 form-group">
-                {{ form.confirmation_mot_de_passe.label(class="mb-3") }} {{ form.confirmation_mot_de_passe(size=50,
-                placeholder="Mot de passe",class="rounded-3") }}
-            </div>
-            <div class="color_white mb-3 form-group">
-                {{ form.email.label(class="mb-3") }} {{ form.email(size=50, placeholder="Adresse mail",
-                class="rounded-3") }}
-            </div>
-            <div class="color_white mb-3 form-group">{{ form.role.label(class= "aucun mb-3") }} {{ form.role()}}</div>
-            <div class="d-flex justify-content-center mb-3 form-group">
-                <button class="btn btn-base fw-bolder" type="submit">Enregistrer</button>
-            </div>
-        </form>
+            <form method="post" action="{{ url_for('signin') }}" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    {{ form.nom_user.label(class="form-label") }}
+                    {{ form.nom_user(size=50, placeholder="Nom", class="form-control rounded-3") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.prenom_user.label(class="form-label") }}
+                    {{ form.prenom_user(size=50, placeholder="Prénom", class="form-control rounded-3") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.poids_user.label(class="form-label") }}
+                    {{ form.poids_user(size=50, placeholder="Poids", class="form-control rounded-3") }}
+                </div> 
+
+                <div class="mb-3">
+                    {{ form.mot_de_passe.label(class="form-label") }}
+                    {{ form.mot_de_passe(size=50, placeholder="Mot de passe", class="form-control rounded-3") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.confirmation_mot_de_passe.label(class="form-label") }}
+                    {{ form.confirmation_mot_de_passe(size=50, placeholder="Confirmation du mot de passe", class="form-control rounded-3") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(size=50, placeholder="Adresse mail", class="form-control rounded-3") }}
+                </div>
+                
+                <div class="mb-3 signin-admin-roles">
+                    {{ form.role.label(class="form-label") }}
+                    {{ form.role(class="form-select rounded-3") }}
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn couleur-btn fw-bolder" type="submit">Enregistrer</button>
+                </div>
+            </form>
+        </div>
     </body>
 </html>

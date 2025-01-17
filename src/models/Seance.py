@@ -15,9 +15,6 @@ class Seance(db.Model):
     
     # Pour un moniteur
     moniteur = db.relationship("Utilisateur", back_populates="les_seances")
-    
-    # Pour un élève
-    les_reservations = db.relationship("Reservation_Seance", back_populates="seance", lazy=True)
 
     def getDate(self):
         return DateUtils.getDate(self.jour_seance,self.semaine_seance,self.annee_seance)
