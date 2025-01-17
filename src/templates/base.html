@@ -14,77 +14,87 @@
         {{ bootstrap.load_css() }} {% endblock %}
     </head>
 
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         <header>
-            <nav class="nav navbar border">
-                <div>
-                    <a class="btn" href="{{url_for('home')}}">
-                        <h1 class="plc-dark">Grand Galop</h1>
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
+                <div class="container-fluid">
+                    <a class="navbar-brand me-3" href="{{ url_for('home') }}">
+                        <img
+                            src="{{ url_for('static', filename='img/logo.webp') }}"
+                            alt="Grand Galop"
+                            width="30"
+                            height="30"
+                            class="d-inline-block align-text-top"
+                        />
+                        Grand Galop
                     </a>
-                </div>
-                {% if current_user.is_authenticated and current_user.is_moniteur() %}
-                <div>
-                    <a class="btn" href="{{url_for('ajout_poney')}}">
-                        <h2 class="plc-dark">Ajouter poney</h2>
-                    </a>
-                </div>
-                {% endif %}
-                {% if current_user.is_authenticated and current_user.is_moniteur() %}
-                <div>
-                    <a class="btn" href="{{url_for('ajout_seance')}}">
-                        <h2 class="plc-dark">Ajouter une séance</h2>
-                    </a>
-                </div>
-                {% endif %}
-                {% if current_user.is_authenticated %}
-                <div>
-                    <a class="btn" href="{{url_for('voir_seances')}}">
-                        <h2 class="plc-dark">Mes séances</h2>
-                    </a>
-                </div>
-                {% endif %}
-                <div>
-                    <a class="btn" href="{{ url_for('voir_toutes_seances') }}">
-                        <h2 class="plc-dark">Les séances à venir</h2>
-                    </a>
-                </div>
-                {% if not current_user.is_authenticated %}
-                <div>
-                    <a class="btn" href="{{url_for('login')}}">
-                        <h2 class="plc-dark">Se connecter</h2>
-                    </a>
-                </div>
-                {% endif %}
-                {% if not current_user.is_authenticated %}
-                <div>
-                    <a class="btn" href="{{url_for('signin')}}">
-                        <h2 class="plc-dark">S'inscrire</h2>
-                    </a>
-                </div>
-                {% endif %}
-                {% if current_user.is_authenticated %}
-                <div>
-                    <a class="btn" href="{{url_for('modifier_profil')}}">
-                        {{current_user.nom_utilisateur}} {{current_user.prenom_utilisateur}} {{current_user.role.name}}
-                    </a>
-                </div>
-                {% endif %}
-                {% if current_user.is_authenticated and current_user.is_admin() %}
-                <div>
-                    <a class="btn" href="{{url_for('signin')}}">
-                        <h2 class="plc-dark">Inscrire un Utilisateur</h2>
-                    </a>
-                </div>
-                {% endif %}
-                <div>
-                    <a class="btn" href="{{url_for('contacter')}}">
-                        <h2 class="plc-dark">Contacter</h2>
-                    </a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            {% if current_user.is_authenticated and current_user.is_moniteur() %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('ajout_poney') }}">Ajouter Poney</a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('ajout_seance') }}">Ajouter Séance</a>
+                            </li>
+                            {% endif %} {% if current_user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('voir_seances') }}">Mes Séances</a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('voir_toutes_seances') }}">Séances à Venir</a>
+                            </li>
+                            {% if current_user.is_authenticated and (current_user.is_admin() or current_user.is_moniteur()) %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('voir_poneys') }}">Voir Poneys</a>
+                            </li>
+                            {% endif %}
+                            {% if current_user.is_authenticated and current_user.is_admin() %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('voir_utilisateurs') }}">Voir Utilisateurs</a>
+                            </li>
+                            {% endif %}
+                            {% if not current_user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('login') }}">Se Connecter</a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('signin') }}">S'inscrire</a>
+                            </li>
+                            {% endif %} {% if current_user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a href="{{ url_for('contacter') }}" class="nav-link">
+                                    Contacter
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('modifier_profil') }}" class="nav-link profile-link">
+                                    {{ current_user.nom_utilisateur }} {{ current_user.prenom_utilisateur }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </header>
 
-        <main>{% block content %} {% endblock %}</main>
+        <main class="flex-fill container mt-4">{% block content %} {% endblock %}</main>
+
+        <!-- Supprimer le pied de page -->
+
         <script src="{{ url_for('static', filename='popup.js')}}" crossorigin="anonymous" defer></script>
     </body>
 </html>

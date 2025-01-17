@@ -19,8 +19,150 @@
   color: white;
   border: 1px solid black;
   border-radius: 5px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.couleur-btn:hover {
+  background-color: #4a2e26;
+  border-color: #4a2e26;
 }
 
 .hidden {
   display: none !important;
+}
+
+/* Assurer que le corps prend toute la hauteur et utilise flexbox */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: transparent; /* Ajouter cette ligne si nécessaire */
+  padding-top: 10px; /* Réduire le padding supérieur */
+}
+
+/* Styles pour le pied de page */
+footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+}
+
+footer .btn-primary {
+  background-color: #3e2317;
+  border-color: #3e2317;
+}
+
+footer .btn-primary:hover {
+  background-color: #4a2e26;
+  border-color: #4a2e26;
+}
+
+/* Styles pour les formulaires */
+.container {
+    margin-top: 50px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+/* Styles améliorés pour les composants générés par JavaScript */
+#agendaContainer, #agenda_toutesContainer {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#agendaContainer div, #agenda_toutesContainer div {
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#agendaContainer div:hover, #agenda_toutesContainer div:hover {
+    background-color: #b0bec5;
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+.btn-primary {
+    background-color: #5a3e36;
+    border-color: #5a3e36;
+}
+
+.btn-primary:hover {
+    background-color: #4a2e26;
+    border-color: #4a2e26;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    border-color: #5a3e36;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+/* Améliorer l'apparence des cellules de l'agenda */
+#agendaContainer div.bg-info, #agenda_toutesContainer div.bg-info {
+    background-color: #4e73df;
+}
+
+#agendaContainer div.bg-info.text-white, #agenda_toutesContainer div.bg-info.text-white {
+    color: #ffffff;
+}
+
+/* Réduire les marges et paddings du header */
+header {
+    margin: 0; /* Supprimer toute marge par défaut */
+    padding: 5px 0; /* Réduire le padding supérieur et inférieur */
+}
+
+header .d-flex {
+    margin: 0; /* Supprimer les marges supplémentaires */
+    padding: 0; /* Supprimer les paddings supplémentaires */
+}
+
+header img {
+    margin: 0.25rem; /* Réduire les marges autour de l'image */
+    padding: 0; /* Supprimer les paddings autour de l'image */
+}
+
+header .ms-2 {
+    margin-left: 0.5rem; /* Ajuster la marge gauche */
+}
+
+header .navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+header .navbar-brand img {
+    margin-right: 10px;
+}
+
+header .nav-link {
+    font-size: 1rem;
+}
+
+/* Réduire la taille des polices dans le header */
+header .display-4 {
+    font-size: 2rem; /* Réduire la taille des polices */
+}
+
+/* Réduire le padding des cartes de connexion */
+.card {
+    padding: 1rem; /* Ajuster le padding si nécessaire */
+    margin-top: 5px; /* Uniformisé à 5px */
+}
+
+/* Supprimer le style à puce pour les rôles dans signin_admin.html */
+.signin-admin-roles {
+    list-style: none; /* Supprimer les puces */
+    padding-left: 0; /* Supprimer le padding gauche */
+    margin: 0; /* Supprimer la marge */
+}
+
+/* Styles pour les nouveaux liens dans la navbar */
+.nav-link {
+    /* ...existing styles... */
+    /* Ajouter des styles supplémentaires si nécessaire */
 }

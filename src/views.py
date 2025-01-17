@@ -54,7 +54,7 @@ def roles(*roles):
         return decorated_function
     return decorator
 
-@app.route('/')
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     """Renvoie la page de connexion
@@ -115,6 +115,7 @@ def logout():
 user_datastore = SQLAlchemySessionUserDatastore(db.session, Utilisateur, Role)
 security = Security(app, user_datastore)
 
+@app.route('/')
 @app.route('/home', methods=['GET','POST'])
 def home():
     """Renvoie la page d'accueil

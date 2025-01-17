@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <form method="post" action="{{ url_for('contacter') }}" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+<div class="container">
+    <h1 class="fw-bolder display-4 text-center mb-4">Contacter</h1>
+    <form method="post" action="{{ url_for('contacter') }}" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-white">
         {{ form.hidden_tag() }}
         
         <div class="mb-3">
@@ -16,11 +17,11 @@
 
         <div class="mb-3">
             {{ form.contenu.label(class="form-label fw-bold") }}
-            {{ form.contenu(size=50, placeholder="Message", class="form-control rounded-3") }}
+            {{ form.contenu(size=50, placeholder="Message", class="form-control rounded-3", rows="5") }}
         </div>
 
-        <div class="text-center d-flex justify-content-start">
-            {{ form.submit(class="couleur-btn") }}
+        <div class="text-center">
+            {{ form.submit(class="btn couleur-btn") }}
         </div>
     </form>
 </div>

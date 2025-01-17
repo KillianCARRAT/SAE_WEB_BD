@@ -77,14 +77,14 @@ function displayAgenda(seances) {
   container.id = "agendaContainer";
   container.style.display = "grid";
   container.style.gridTemplateColumns = "repeat(7, 1fr)";
-  container.style.gridTemplateRows = "50px repeat(48, 20px)";
-  container.style.gap = "1px";
+  container.style.gridTemplateRows = "auto repeat(48, 1fr)";
+  container.style.gap = "5px"; // Augmenter l'espacement
+  container.style.padding = "10px"; // Ajouter du padding
 
   // Entête « Heure/Jour »
   const hourHeader = document.createElement("div");
   hourHeader.textContent = "Heure/Jour";
-  hourHeader.style.border = "1px solid black";
-  hourHeader.style.fontWeight = "bold";
+  hourHeader.classList.add("bg-secondary", "text-white", "p-2", "rounded");
   hourHeader.style.gridRow = "1 / 2";
   hourHeader.style.gridColumn = "1 / 2";
   container.appendChild(hourHeader);
@@ -100,8 +100,7 @@ function displayAgenda(seances) {
     date_info = new Date(currentYear, 0, 1 + daysOffset);
     const dayCell = document.createElement("div");
     dayCell.textContent = day + " " + date_info.toLocaleDateString("fr-FR");
-    dayCell.style.border = "1px solid black";
-    dayCell.style.fontWeight = "bold";
+    dayCell.classList.add("bg-light", "p-2", "rounded");
     dayCell.style.gridRow = "1 / 2";
     dayCell.style.gridColumn = `${index + 2} / ${index + 3}`;
     container.appendChild(dayCell);
@@ -113,14 +112,14 @@ function displayAgenda(seances) {
 
     const timeCell = document.createElement("div");
     timeCell.textContent = `${h}:00`;
-    timeCell.style.border = "1px solid black";
+    timeCell.classList.add("bg-light", "p-1", "rounded");
     timeCell.style.gridColumn = "1 / 2";
     timeCell.style.gridRow = `${rowBase} / ${rowBase + 2}`;
     container.appendChild(timeCell);
 
     const halfHourCell = document.createElement("div");
     halfHourCell.textContent = `${h}:30`;
-    halfHourCell.style.border = "1px solid black";
+    halfHourCell.classList.add("bg-light", "p-1", "rounded");
     halfHourCell.style.gridColumn = "1 / 2";
     halfHourCell.style.gridRow = `${rowBase + 1} / ${rowBase + 2}`;
     container.appendChild(halfHourCell);
@@ -132,13 +131,13 @@ function displayAgenda(seances) {
       const rowBase = 2 + (h - 8) * 2;
 
       const cellHour = document.createElement("div");
-      cellHour.style.border = "1px solid black";
+      cellHour.classList.add("bg-light", "p-1", "rounded");
       cellHour.style.gridColumn = `${dayIndex + 2}`;
       cellHour.style.gridRow = `${rowBase} / ${rowBase + 2}`;
       container.appendChild(cellHour);
 
       const cellHalfHour = document.createElement("div");
-      cellHalfHour.style.border = "1px solid black";
+      cellHalfHour.classList.add("bg-light", "p-1", "rounded");
       cellHalfHour.style.gridColumn = `${dayIndex + 2}`;
       cellHalfHour.style.gridRow = `${rowBase + 1} / ${rowBase + 2}`;
       container.appendChild(cellHalfHour);
@@ -165,8 +164,7 @@ function displayAgenda(seances) {
 
           const seanceCell = document.createElement("div");
           seanceCell.textContent = `${seance.heure_debut_seance} - ${seance.heure_fin_seance}`;
-          seanceCell.style.border = "1px solid black";
-          seanceCell.style.backgroundColor = "#cfd8dc";
+          seanceCell.classList.add("bg-info", "text-white", "p-1", "rounded");
           seanceCell.style.gridRow = `${startRow} / span ${halfHours}`;
           seanceCell.style.gridColumn = `${jourIndex + 2}`;
           container.appendChild(seanceCell);
@@ -179,29 +177,34 @@ function displayAgenda(seances) {
     }
   });
 
-  document.body.appendChild(container);
+  document.getElementById("agenda_toutes").appendChild(container);
 }
 
 // Ajout d'une zone pour les boutons et champs de navigation
 const formContainer = document.createElement("div");
-formContainer.style.marginBottom = "10px";
+formContainer.classList.add("mb-3"); // Bootstrap margin-bottom
 
 const prevButton = document.createElement("button");
 prevButton.innerText = "Semaine précédente";
+prevButton.classList.add("btn", "btn-primary", "me-2"); // Bootstrap classes
 prevButton.addEventListener("click", previousWeek);
 formContainer.appendChild(prevButton);
 
 const nextButton = document.createElement("button");
 nextButton.innerText = "Semaine suivante";
+nextButton.classList.add("btn", "btn-primary", "me-2"); // Bootstrap classes
 nextButton.addEventListener("click", nextWeek);
 formContainer.appendChild(nextButton);
 
 const dateLabel = document.createElement("label");
 dateLabel.innerText = "Date : ";
+dateLabel.classList.add("form-label", "me-2"); // Bootstrap classes
+
 const dateInput = document.createElement("input");
 dateInput.type = "date";
 dateInput.id = "dateInput";
 dateInput.valueAsDate = new Date();
+dateInput.classList.add("form-control", "d-inline-block", "w-auto"); // Bootstrap classes
 dateLabel.appendChild(dateInput);
 formContainer.appendChild(dateLabel);
 
@@ -223,7 +226,7 @@ dateInput.addEventListener("change", () => {
   update();
 });
 
-document.body.appendChild(formContainer);
+document.getElementById("agenda_toutes").appendChild(formContainer);
 
 // Lancement initial
 receiveAgendaJsonApi();

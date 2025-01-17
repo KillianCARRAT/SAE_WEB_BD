@@ -1,14 +1,21 @@
-{% extends 'base.html' %} {% block content %}
-<h1 class="fw-bolder display-3 my-5"><strong>Les Adhérents et Moniteurs</strong></h1>
+{% extends 'base.html' %} 
+{% block content %}
+<h1 class="fw-bolder display-3 my-5 text-center"><strong>Les Adhérents et Moniteurs</strong></h1>
 
-<div class="container mt-5">
-    {% for user in utilisateurs %}
-    <div class="container mt-5 shadow p-3 mb-2 bg-white rounded">
-        <h2>Nom : {{ user.nom_utilisateur }}</h2>
-        <p>Prenom : {{ user.prenom_utilisateur }}</p>
-        <p>Email : {{ user.email_utilisateur }}</p>
-        <p>Role : {{ user.role.name }}</p>
+<div class="container">
+    <div class="row">
+        {% for user in utilisateurs %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow p-3 bg-white rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Nom : {{ user.nom_utilisateur }}</h5>
+                    <p class="card-text">Prénom : {{ user.prenom_utilisateur }}</p>
+                    <p class="card-text">Email : {{ user.email_utilisateur }}</p>
+                    <p class="card-text">Role : {{ user.role.name }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
