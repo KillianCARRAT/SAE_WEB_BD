@@ -14,8 +14,8 @@ class InscriptionForm(FlaskForm):
     prenom_user = StringField('Prenom', validators=[DataRequired()])
     mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
     confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
-    poids_user = IntegerField("Poids en kg", validators=[DataRequired(), NumberRange(min=1, max=300, message="Le poids doit être entre 1 et 300 kg.")])
-    email = StringField('Adresse mail', validators=[DataRequired(), Email()])
+    poids_user = IntegerField("Poids", validators=[DataRequired()])
+    email = StringField('Adresse mail', validators=[DataRequired()])
     def validate(self, extra_validators=None):
         if not FlaskForm.validate(self, extra_validators=extra_validators):
             return False
@@ -33,9 +33,9 @@ class InscriptionFormAdmin(FlaskForm):
     prenom_user = StringField('Prenom', validators=[DataRequired()])
     mot_de_passe = PasswordField('Mot de passe', validators=[DataRequired()])
     confirmation_mot_de_passe = PasswordField('Confirmation mot de passe', validators=[DataRequired()])
-    email = StringField('Adresse mail', validators=[DataRequired(), Email()])
-    poids_user = IntegerField("Poids", validators=[DataRequired(), NumberRange(min=1, max=300, message="Le poids doit être entre 1 et 300 kg.")])
-    role = RadioField('Role', choices=[('moniteur', 'Moniteur'), ('adhérent', 'Adhérent')], validators=[DataRequired()])
+    email = StringField('Adresse mail', validators=[DataRequired()])
+    poids_user = IntegerField("Poids", validators=[DataRequired()])
+    role = RadioField('Role')
     def validate(self, extra_validators=None):
         if not FlaskForm.validate(self, extra_validators=extra_validators):
             return False
@@ -61,8 +61,8 @@ class UpdateUser(FlaskForm):
     id =HiddenField('id')
     nom_user = StringField("Nom", validators=[DataRequired()])
     prenom_user = StringField('Prenom', validators=[DataRequired()])
-    email = StringField('Adresse mail', validators=[DataRequired(), Email()])
-    poids_user = IntegerField("Poids", validators=[DataRequired(), NumberRange(min=1, max=300, message="Le poids doit être entre 1 et 300 kg.")])
+    email = StringField('Adresse mail', validators=[DataRequired()])
+    poids_user = IntegerField("Poids", validators=[DataRequired()])
     def validate(self, extra_validators=None):
         if not super().validate(extra_validators=extra_validators):
             return False

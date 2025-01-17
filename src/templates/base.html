@@ -56,17 +56,19 @@
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{ url_for('voir_toutes_seances') }}">Séances à Venir</a>
                             </li>
-                            {% if current_user.is_authenticated and (current_user.is_admin() or current_user.is_moniteur()) %}
+                            {% if current_user.is_authenticated and (current_user.is_admin() or
+                            current_user.is_moniteur()) %}
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{ url_for('voir_poneys') }}">Voir Poneys</a>
                             </li>
-                            {% endif %}
-                            {% if current_user.is_authenticated and current_user.is_admin() %}
+                            {% endif %} {% if current_user.is_authenticated and current_user.is_admin() %}
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{ url_for('voir_utilisateurs') }}">Voir Utilisateurs</a>
                             </li>
-                            {% endif %}
-                            {% if not current_user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a class="nav-link" href="{{ url_for('signin') }}">Ajouter utilisateur</a>
+                            </li>
+                            {% endif %} {% if not current_user.is_authenticated %}
                             <li class="nav-item me-3">
                                 <a class="nav-link" href="{{ url_for('login') }}">Se Connecter</a>
                             </li>
@@ -75,9 +77,7 @@
                             </li>
                             {% endif %} {% if current_user.is_authenticated %}
                             <li class="nav-item me-3">
-                                <a href="{{ url_for('contacter') }}" class="nav-link">
-                                    Contacter
-                                </a>
+                                <a href="{{ url_for('contacter') }}" class="nav-link"> Contacter </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url_for('modifier_profil') }}" class="nav-link profile-link">

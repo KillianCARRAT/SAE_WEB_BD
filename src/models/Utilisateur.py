@@ -6,12 +6,12 @@ class Utilisateur(db.Model, UserMixin):
     __tablename__ = "UTILISATEUR"
 
     id_utilisateur = db.Column(db.Integer, primary_key=True)
-    nom_utilisateur = db.Column(db.String(50), nullable=False)
-    prenom_utilisateur = db.Column(db.String(50), nullable=False)
+    nom_utilisateur = db.Column(db.String(50))
+    prenom_utilisateur = db.Column(db.String(50))
     tel_utilisateur = db.Column(db.Text)
-    poids_user = db.Column(db.Integer, nullable=False)
-    email_utilisateur = db.Column(db.String(120), unique=True, nullable=False)
-    mdp_utilisateur = db.Column(db.String(64), nullable=False)
+    poids_utilisateur = db.Column(db.Integer)
+    email_utilisateur = db.Column(db.String(120), unique=True)
+    mdp_utilisateur = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('ROLE.id_role'))
     active = db.Column(db.Boolean, default=True)
     fs_uniquifier = db.Column(db.String(255), unique=True, default=lambda: str(uuid.uuid4()))
@@ -33,6 +33,9 @@ class Utilisateur(db.Model, UserMixin):
     def is_adhérent(self):
         return self.role.name == 'Adhérent'
 
+    @classmethod
+    def get_by_fs_uniquifier(cls, fs_uniquifier):
+        return cls.query.filter_by(fs_uniquifier=fs_uniquifier).first()
 
     def get_last_id():
         id = 0
